@@ -17,6 +17,6 @@ GUI, proces wydawania diagnoz.
 ### Zadania ewentualne:
 wizualizacja 3D, praca w czasie rzeczywistym, graficzna interakcja z danymi (rysowanie na obrazku),
 ## Podział:
-### Michał Asare Kierownik 😎 - wizualizacja 2D, UI, proces wydawania diagnoz.
-### Piotr Gmiński 🤓 - Połączenie serwer-klient, przetwarzanie plików medycznych, integracja bazy danych,
-### Taras Shupikau 🤓- UI, baza danych, integracja bazy danych,
+### Michał Asare Kierownik  - wizualizacja 2D, UI, proces wydawania diagnoz.
+### Piotr Gmiński  - Połączenie serwer-klient, przetwarzanie plików medycznych, integracja bazy danych,
+### Taras Shupikau - UI, baza danych, integracja bazy danych,
