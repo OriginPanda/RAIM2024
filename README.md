@@ -10,13 +10,4 @@ Aplikacja ma pozwolić na dostęp do danych medycznych pacjenta i współpracę 
 ...
 ### Artykuł 2
 Artykuł przedstawia rozwój i ocenę biblioteki hFigures, która zainspirowana jest wizualizacją hGrapf i ma na celu ulepszenie sposobu prezentacji danych zdrowotnych. Biblioteka ta umożliwia wszechstronną wizualizację zmian pomiarów zdrowotnych, co jest kluczowe w kontekście rosnącego wykorzystania urządzeń samo-śledzących i medycyny zapobiegawczej.
-# Harmonogram prac / Podział prac na członków zespołu
-### Zadania obowiązkowe:
-Połączenie serwer-klient, wizualizacja 2D, baza danych, integracja bazy danych, przetwarzanie plików medycznych, 
-GUI, proces wydawania diagnoz. 
-### Zadania ewentualne:
-wizualizacja 3D, praca w czasie rzeczywistym, graficzna interakcja z danymi (rysowanie na obrazku),
-## Podział:
-### Michał Asare Kierownik  - wizualizacja 2D, UI, proces wydawania diagnoz.
-### Piotr Gmiński  - Połączenie serwer-klient, przetwarzanie plików medycznych, integracja bazy danych,
-### Taras Shupikau - UI, baza danych, integracja bazy danych,
+
