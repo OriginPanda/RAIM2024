@@ -1,5 +1,5 @@
 """
-Blueprinty logwania do systemu
+Blueprinty logowania do systemu
 """
 from flask import Blueprint
 
