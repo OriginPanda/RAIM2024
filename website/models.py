@@ -7,7 +7,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(1000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    user_id = db.Colummn(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     #patient_id
     #data_id
 
