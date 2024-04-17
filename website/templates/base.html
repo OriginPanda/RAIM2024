@@ -28,12 +28,15 @@
       <a class="navbar-brand" href="#"> SIEMA.inc </a>
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
-          <a class="nav-item nav-link" id="login" href="/login">Login</a>
+          {% if user.is_authenticated %}
+          <a class="nav-item nav-link" id="login" href="/">Home</a>
           <a class="nav-item nav-link" id="login" href="/logout">Logout</a>
+          {% else %}
+          <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="login" href="/sign-up"
             >Rejestracja</a
           >
-          <a class="nav-item nav-link" id="login" href="/">Home</a>
+          {% endif %}
         </div>
       </div>
     </nav>
@@ -80,10 +83,7 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
-    <script src="basescripts.js"></script>
-    <script
-      type="text/javascript"
-      src="{{ url_for('static', filename='index.js') }}"
-    ></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    
   </body>
 </html>
