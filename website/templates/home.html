@@ -1,0 +1,20 @@
+{% extends "base.html" %} {%block title%}Med-Wiz{%endblock%} {%block content%}
+<h1>STRONA GŁÓWNA - KOMENTARZE WIP</h1>
+<ul class="list-group list-group-flush" id="comments">
+  {% for comment in user.comments %}
+  <li class="list-group-item">{{comment.text}}
+    <button type="button" class="close" onClick="deleteCom({{ comment.id }})">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </li>
+  {% endfor %}
+</ul>
+<form method="POST">
+  <textarea name="comment" id="comment" class="form-control"></textarea>
+  <br />
+  <div align="center">
+    <button type="submit" class="btn btn-primary">Dodaj komentarz</button>
+  </div>
+</form>
+
+{%endblock%}
