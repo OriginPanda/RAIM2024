@@ -2,9 +2,10 @@
 <h1>STRONA GŁÓWNA - KOMENTARZE WIP</h1>
 <ul class="list-group list-group-flush" id="comments">
   {% for comment in user.comments %}
-  <li class="list-group-item">{{comment.text}}
-    <button type="button" class="close" onClick="deleteCom({{ comment.id }})">
-        <span aria-hidden="true">&times;</span>
+  <li class="list-group-item">
+    {{comment.text}}
+    <button type="button" class="close" onClick="deleteCom('{{ comment.id }}')">
+      <span aria-hidden="true">&times;</span>
     </button>
   </li>
   {% endfor %}
