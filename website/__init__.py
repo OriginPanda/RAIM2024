@@ -24,7 +24,7 @@ def create_app():
     from .views import views
     from .auth import auth
     
-    from .models import User, Comment
+    from .models import User, Comment, Patient, MedicalData
     
     
     app.register_blueprint(views,url_prefix='/')
