@@ -1,3 +1,4 @@
+
 function deleteCom(commentId){
     fetch('/delete-com',{
         method: "POST",

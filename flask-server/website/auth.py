@@ -12,6 +12,8 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    """Logowanie uzytkownika
+    """
     if request.method =='POST':
         email = request.form.get('email') # moze zmienic na indetifikator czy cos
         password = request.form.get('password')
@@ -32,6 +34,9 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
+    """Wylogowuje i przekierowuje do logowania
+    """
+    
     logout_user()
     flash('Wylogowano', category='success') 
     return redirect(url_for('auth.login'))
@@ -39,6 +44,11 @@ def logout():
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def signup():
+    """Funkcja rejestracji uzytkownika
+    
+    Return: html remplate i argument user do wykorzystania w html
+    """
+    
     if request.method =='POST':
         
         email = request.form.get('email')

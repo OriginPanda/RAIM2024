@@ -7,6 +7,8 @@ from flask_login import login_required, current_user
 from .models import Comment
 from . import db
 
+
+
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET','POST'])
@@ -17,7 +19,7 @@ def home():
         if len(comment) < 1:
             flash('Nie zostało nic wpisane', category='error')
         else:
-            new_comment = Comment(text=comment, user_id=current_user.id)
+            new_comment = Comment(text=comment, user_id=current_user.id, imagepath="static/kratos.png")
             db.session.add(new_comment)
             db.session.commit()
             flash('Dodano', category='success')
