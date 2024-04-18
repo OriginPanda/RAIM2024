@@ -1,0 +1,11 @@
+{
+  "name": "raim2024",
+  "version": "1.0.0",
+  "description": "frontend raim",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
