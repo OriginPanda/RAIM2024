@@ -6,7 +6,7 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
-
+from .forms import MyForm
 
 auth = Blueprint('auth', __name__)
 
@@ -48,7 +48,8 @@ def signup():
     
     Return: html remplate i argument user do wykorzystania w html
     """
-    
+
+
     if request.method =='POST':
         
         email = request.form.get('email')
