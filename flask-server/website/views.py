@@ -19,7 +19,7 @@ def home():
         if len(comment) < 1:
             flash('Nie zostało nic wpisane', category='error')
         else:
-            new_comment = Comment(text=comment, user_id=current_user.id, imagepath="static/kratos.png")
+            new_comment = Comment(text=comment, user_id=current_user.id)
             db.session.add(new_comment)
             db.session.commit()
             flash('Dodano', category='success')
@@ -36,3 +36,4 @@ def delete_com():
             db.session.commit()
             
     return jsonify({})
+
