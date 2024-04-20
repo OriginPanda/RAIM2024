@@ -1,0 +1,22 @@
+{% extends "base.html" %} {%block title%}Med-Wiz{%endblock%} {%block content%}
+<h1>STRONA GŁÓWNA - KOMENTARZE WIP</h1>
+<ul class="list-group list-group-flush" id="comments">
+  {% for patient in patients %}
+  <li class="list-group-item" style="border: 2px solid lightgrey">
+   
+    <br />
+    {{patient.first_name}} <br />
+
+  </li>
+  {% endfor %}
+</ul>
+<form method="POST">
+  <textarea name="data" id="data" class="form-control"></textarea>
+  <br />
+  <div align="center">
+    <button type="submit" class="btn btn-primary">Dodaj pacjenta</button>
+  </div>
+</form>
+
+
+{%endblock%}

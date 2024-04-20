@@ -25,13 +25,16 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="#"> SIEMA.inc </a>
+      <a class="navbar-brand" href="#"> lekarze.inc </a>
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
           {% if user.is_authenticated %}
           <a class="nav-item nav-link" id="login" href="/">Home</a>
           <a class="nav-item nav-link" id="login" href="/logout">Logout</a>
           <a class="nav-item nav-link">{{user.name}}</a>
+
+          <a class="nav-item nav-link" href="/patients"> Pacjenci </a>
+          
 
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
