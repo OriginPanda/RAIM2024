@@ -2,4 +2,3 @@ website/__pycache__/
 instance/
 test_data/
 website/static/kratos.png
-forms.py
