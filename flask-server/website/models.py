@@ -24,10 +24,8 @@ class MedicalData(db.Model):
     
     
     #TODO dodac reszte danych
-    data = None
-    thumbnail = None
-    category = None
-    
+    diagnosis = db.Column(db.String(1000))
+    treatment = db.Column(db.Strong(1000))
     
     # nie wiem co dodać
 
@@ -35,9 +33,12 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
-    name = db.Column(db.String(50))
+    first_name = db.Column(db.String(50))
+    second_name = db.Column(db.String(50))
+    address =  db.Column(db.String(50))
+    phone_number = db.Column(db.Integer)
     comments = db.relationship('Comment')
-    
+    gender = db.Column(db.String(50))
 class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50))
