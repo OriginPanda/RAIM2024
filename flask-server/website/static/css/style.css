@@ -1,4 +1,11 @@
 body {
-    background:#ffffff ;
-
+  background: F5F7F8;
+}
+.navbar-nav > a {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.navbar-nav > a{
+    margin-left:10px;
+    margin-right:10px;
 }

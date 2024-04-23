@@ -2,16 +2,17 @@
 from "jinja_helpers.html" import render_button %}{% from "jinja_helpers.html"
 import render_checkbox %} {%block title%}Med-Wiz login{%endblock%} {%block
 content%}
-
-<form method="post" novalidate="true">
-  <br />
-  {{ form.csrf_token }} {{form.hidden_tag()}} {{render_field(form.email)}}
-  <br />
-  {{render_field(form.password)}}
-  <br />
-  {{render_checkbox(form.remember)}}
-  <br />
-  {{render_button(form.submit)}}
-</form>
-
+<br />
+<div class="shadow p-3 mb-5 bg-body rounded">
+  <form method="post" novalidate="true">
+    <br />
+    {{ form.csrf_token }} {{form.hidden_tag()}} {{render_field(form.email)}}
+    <br />
+    {{render_field(form.password)}}
+    <br />
+    {{render_checkbox(form.remember)}}
+    <br />
+    {{render_button(form.submit)}}
+  </form>
+</div>
 {%endblock%}

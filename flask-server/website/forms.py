@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request 
 from flask_wtf import FlaskForm 
-from wtforms import StringField, PasswordField, BooleanField , SubmitField
+from wtforms import StringField, PasswordField, BooleanField , SubmitField, IntegerField
 from wtforms import DecimalField, RadioField, SelectField, TextAreaField, FileField
-from wtforms.validators import InputRequired, DataRequired, EqualTo, Email
+from wtforms.validators import InputRequired, DataRequired, EqualTo, Email, ValidationError
 
 
 
@@ -15,9 +15,6 @@ class RegisterForm  (FlaskForm):
     submit = SubmitField("Sign Up")
     
     
-    
-    
-     
     # remember_me = BooleanField('Remember me') 
     # salary = DecimalField('Salary', validators=[InputRequired()]) 
     # gender = RadioField('Gender', choices=[ ('male', 'Male'), ('female', 'Female')]) 
@@ -28,3 +25,14 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember?')
     submit = SubmitField("Login")
+    
+class PatientForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(message=("Halo?"))])
+    pesel = IntegerField('Pesel', validators=[DataRequired()])
+    submit = SubmitField("Dodaj")
+    
+    def validate_pesel(form, field):
+        check = str(field.data)
+        if len(check) != 11:
+            raise ValidationError("Błędny pesel")
+     

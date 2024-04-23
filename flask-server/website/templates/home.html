@@ -6,8 +6,6 @@
     <b>Data zamieszczenia: {{comment.date}} </b>
     <br />
     {{comment.text}} <br />
-
-    <img src="{{url_for('static', filename='kratos.png') }}" alt="User Image" />
     <button type="button" class="close" onClick="deleteCom('{{ comment.id }}')">
       <span aria-hidden="true">&times;</span>
     </button>

@@ -1,17 +1,29 @@
-{% extends "base.html" %}{% from "jinja_helpers.html" import render_field %} {%
-from "jinja_helpers.html" import render_button %} {%block title%}Med-Wiz
-Rejestracja{%endblock%} {%block content%}
 
-<form method="post" novalidate="true">
+{% extends "base.html" %}{% from "jinja_helpers.html" import render_field %} {%
+  from "jinja_helpers.html" import render_button %} {%block title%}Med-Wiz
+  Rejestracja{%endblock%} {%block content%}
   <br />
-  {{ form.csrf_token }} {{form.hidden_tag()}}{{render_field(form.name)}}
+  <div class="shadow p-3 mb-5 bg-body rounded">
+  <form method="post" novalidate="true">
+    {{ form.csrf_token }} {{form.hidden_tag()}}{{render_field(form.name)}}
+    <br />
+    {{render_field(form.email)}}
+    <br />
+    {{render_field(form.password)}}
+    <br />
+    {{render_field(form.repassword)}}
+    <br />
+    {{render_button(form.submit)}}
+  </form>
+  </div>
   <br />
-  {{render_field(form.email)}}
-  <br />
-  {{render_field(form.password)}}
-  <br />
-  {{render_field(form.repassword)}}
-  <br />
-  {{render_button(form.submit)}}
-</form>
-{%endblock%}
+  <table class="table table-hover table-bordered table-striped">
+  {% for user in users %} 
+  <tr>
+  <td>
+  {{user.id}}. {{user.name}} - {{user.email}} 
+  </td>
+  </tr>
+  {% endfor %}
+  </table>
+  {%endblock%}

@@ -27,12 +27,15 @@ def login():
                 flash('Zalogowano', category='success')
                 login_user(user, remember=form.remember.data) # remember pamieta ze uzytkownik jest zalogowany ze strony serwera
                 print(form.remember.data)
+                form.data.clear()
                 return redirect(url_for('views.home'))
             else:
                 form.password.errors.append("Złe hasło")
         else:
            form.email.errors.append("Użytkownik nie istnieje")
            form.password.errors.append("")
+    
+    
     return render_template("login.html", user=current_user, form = form)
 
 
@@ -62,9 +65,10 @@ def signup():
             db.session.add(user)
             db.session.commit()
             flash('Rejestracja udana',category='success')
-    
-        return redirect(url_for('views.home'))
-            
-            
-    return render_template("sign-up.html", user=current_user, form = form)
+            form.data.clear()
+            return redirect(url_for('auth.login'))
+        else:
+           form.email.errors.append("Użytkownik o podanym adresie istnieje")
+    users = User.query.order_by(User.date_added)          
+    return render_template("sign-up.html", user=current_user, form = form, users=users)
 
