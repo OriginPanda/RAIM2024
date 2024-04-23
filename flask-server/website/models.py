@@ -40,6 +40,9 @@ class User(db.Model, UserMixin):
     
     comments = db.relationship('Comment')
     
+    def __repr__(self):
+        return '<Name %r>' % self.name
+    
 class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50))

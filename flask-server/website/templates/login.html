@@ -1,34 +1,17 @@
-{% extends "base.html" %} {%block title%}Med-Wiz login{%endblock%}
+{% extends "base.html" %}{% from "jinja_helpers.html" import render_field %} {%
+from "jinja_helpers.html" import render_button %}{% from "jinja_helpers.html"
+import render_checkbox %} {%block title%}Med-Wiz login{%endblock%} {%block
+content%}
 
-{%block content%}
-
-<form method="post">
-    <br />
-    <h2 align="Center">Logowanie</h2>
-    <div class="form-group">
-      <label for="name">Email</label>
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        name="email"
-        placeholder="Wpisz Email"
-      />
-    </div>
-    <div class="form-group">
-      <label for="password">Hasło</label>
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        name="password"
-        placeholder="Wpisz hasło"
-      />
-    </div>
-    <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+<form method="post" novalidate="true">
+  <br />
+  {{ form.csrf_token }} {{form.hidden_tag()}} {{render_field(form.email)}}
+  <br />
+  {{render_field(form.password)}}
+  <br />
+  {{render_checkbox(form.remember)}}
+  <br />
+  {{render_button(form.submit)}}
+</form>
 
 {%endblock%}
-
-

@@ -23,6 +23,7 @@ def home():
             db.session.add(new_comment)
             db.session.commit()
             flash('Dodano', category='success')
+            
     return render_template("home.html", user=current_user)
 
 @views.route('/delete-com', methods=['POST'])
@@ -34,6 +35,12 @@ def delete_com():
         if comment.user_id == current_user.id:
             db.session.delete(comment)
             db.session.commit()
-            
+     
     return jsonify({})
 
+@views.route('/patient/add', methods=['GET','POST'])
+@login_required
+def home():
+    pass
+            
+    #return render_template("home.html", user=current_user)
