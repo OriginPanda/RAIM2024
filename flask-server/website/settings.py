@@ -15,8 +15,9 @@ def user_settings ():
         email = current_user.email 
 
         user = User.query.filter_by(email = email).first()
+        print(user)
         user.name = request.form.get("name")
         user.email = request.form.get("email")
-        user.password = request.form.get("password")
-
+        # user.password = request.form.get("password")
+        db.session.commit()
     return render_template("settings.html", user=current_user)
