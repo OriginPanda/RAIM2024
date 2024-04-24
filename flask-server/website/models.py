@@ -6,18 +6,23 @@ from PIL import Image
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(1000))
+    text = db.Column(db.String(500))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    data_id = db.Column(db.Integer, db.ForeignKey('medical_data.id'))  
+    
+    #data_id = db.Column(db.Integer, db.ForeignKey('medical_data.id'))
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))  
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     
-    imagepath = db.Column(db.String(1000))
+    imagename = db.Column(db.String(500))
 
 class MedicalData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(500))
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    comments = db.relationship('Comment')
+    diagnosis = db.Column(db.String(500))
+    #comments = db.relationship('Comment')
     
     ## Placeholders
     data_url = None #db.Column()
@@ -39,7 +44,7 @@ class User(db.Model, UserMixin):
     # phone_number = db.Column(db.Integer)
     
     comments = db.relationship('Comment')
-    
+    medicalDataAdded = db.relationship('MedicalData')
     def __repr__(self):
         return '<Name %r>' % self.name
     
@@ -49,4 +54,4 @@ class Patient(db.Model):
     pesel = db.Column(db.Integer, unique=True)
     date_added = db.Column(db.DateTime(timezone=True), default=func.now())
     medicalRecord = db.relationship('MedicalData')
-    
+    opinions = db.relationship('Comment')

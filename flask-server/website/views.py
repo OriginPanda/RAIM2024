@@ -4,8 +4,8 @@ Blueprinty konkretnych widokow na stonie
 import json
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
-from .models import Comment, Patient
-from .forms import PatientForm
+from .models import Comment, Patient, MedicalData
+from .forms import PatientForm, MedDataForm, CommentForm
 from . import db
 
 
@@ -59,13 +59,43 @@ def patients():
     return render_template("patients.html", user = current_user, form = form, patients = patients)
             
     #return render_template("home.html", user=current_user)
+    
+@views.route('/patients/<int:patientId>', methods=['GET','POST'])
+@login_required
+def patientView(patientId):
+    
+    patient = Patient.query.get_or_404(patientId)
+    #if current_user.group_id != patient.group_id 
+    #else
+    medform = MedDataForm()
+    
+    if medform.validate_on_submit():
+            # new_meddata = MedicalData(diagnosis=medform.text, user_id=current_user.id, patient_id = patientId, title=medform.title)
+            new_meddata = MedicalData(diagnosis=medform.text.data, user_id=current_user.id, patient_id = patientId, title=medform.title.data)
+            db.session.add(new_meddata)
+            db.session.commit()
+            flash('Dodano dane', category='success')
+            return redirect('/patients/'+str(patientId))
+        
+    if request.method =='POST':
+        comment = request.form.get('comment')
+        if len(comment) < 1:
+            flash('Nie zostało nic wpisane', category='error')
+        else:
+            new_comment = Comment(text=comment, user_id=current_user.id,patient_id = patientId)
+            db.session.add(new_comment)
+            db.session.commit()
+            flash('Dodano', category='success')
+             
+    return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient)
+
 
 @views.route('/patients/delete', methods=['POST'])
 @login_required
 def delete_patient():
     patient = json.loads(request.data)
     patientId = patient['patientId']
-    patient = Patient.query.get(patientId)
+    patient = Patient.query.get_or_404(patientId)
     if patient:
         #if patient.group_id == current_user.group_id:
         db.session.delete(patient)
