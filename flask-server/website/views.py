@@ -68,26 +68,27 @@ def patientView(patientId):
     #if current_user.group_id != patient.group_id 
     #else
     medform = MedDataForm()
+    comform = CommentForm()
     
-    if medform.validate_on_submit():
+    if medform.submit.data and medform.validate_on_submit():
             # new_meddata = MedicalData(diagnosis=medform.text, user_id=current_user.id, patient_id = patientId, title=medform.title)
             new_meddata = MedicalData(diagnosis=medform.text.data, user_id=current_user.id, patient_id = patientId, title=medform.title.data)
             db.session.add(new_meddata)
             db.session.commit()
+            medform.data.clear()
             flash('Dodano dane', category='success')
             return redirect('/patients/'+str(patientId))
         
-    if request.method =='POST':
-        comment = request.form.get('comment')
-        if len(comment) < 1:
-            flash('Nie zostało nic wpisane', category='error')
-        else:
-            new_comment = Comment(text=comment, user_id=current_user.id,patient_id = patientId)
-            db.session.add(new_comment)
-            db.session.commit()
-            flash('Dodano', category='success')
+    if comform.validate_on_submit():
+        
+        new_comment = Comment(text=comform.text.data, user_id=current_user.id, patient_id = patientId)
+        db.session.add(new_comment)
+        db.session.commit()
+        comform.data.clear()
+        flash('Dodano', category='success')
+        return redirect('/patients/'+str(patientId))
              
-    return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient)
+    return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient, comform = comform)
 
 
 @views.route('/patients/delete', methods=['POST'])
@@ -102,3 +103,46 @@ def delete_patient():
         db.session.commit()
      
     return jsonify({})
+
+@views.route('/patients/addMed/<int:patientId>', methods=['POST'])
+@login_required
+def addPatMed(patientId):
+    
+    patient = Patient.query.get_or_404(patientId)
+    #if current_user.group_id != patient.group_id 
+    #else
+    medform = MedDataForm()
+    comform = CommentForm()
+    
+    if medform.submit.data and medform.validate_on_submit():
+            # new_meddata = MedicalData(diagnosis=medform.text, user_id=current_user.id, patient_id = patientId, title=medform.title)
+            new_meddata = MedicalData(diagnosis=medform.text.data, user_id=current_user.id, patient_id = patientId, title=medform.title.data)
+            db.session.add(new_meddata)
+            db.session.commit()
+            medform.data.clear()
+            flash('Dodano dane', category='success')
+            return redirect('/patients/'+str(patientId))
+         
+    return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient, comform = comform)
+
+@views.route('/patients/addCom/<int:patientId>', methods=['POST'])
+@login_required
+def addPatCom(patientId):
+    
+    patient = Patient.query.get_or_404(patientId)
+    #if current_user.group_id != patient.group_id 
+    #else
+    medform = MedDataForm()
+    comform = CommentForm()
+    
+
+    if comform.validate_on_submit():
+        print('siema')
+        new_comment = Comment(text=comform.text.data, user_id=current_user.id, patient_id = patientId)
+        db.session.add(new_comment)
+        db.session.commit()
+        comform.data.clear()
+        flash('Dodano', category='success')
+        return redirect('/patients/'+str(patientId))
+             
+    return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient, comform = comform)

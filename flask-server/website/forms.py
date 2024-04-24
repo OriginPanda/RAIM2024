@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField , SubmitField, IntegerField
 from wtforms import DecimalField, RadioField, SelectField, TextAreaField, FileField
 from wtforms.validators import InputRequired, DataRequired, EqualTo, Email, ValidationError, Length
-
+from wtforms.widgets import TextArea
 
 
 
@@ -56,8 +56,7 @@ class MedDataForm(FlaskForm):
 class CommentForm(FlaskForm):  
     
     
-    title = StringField('Tytuł', validators=[DataRequired()])
-    text = StringField('Komentarz', validators=[DataRequired(),Length(max=500,message="Wiadomość za długa")])
+    text = StringField('Komentarz', validators=[DataRequired(),Length(max=500,message="Wiadomość za długa")], widget=TextArea(),render_kw={'class': 'form-control'})
     
         
     submit = SubmitField("Dodaj komentarz")

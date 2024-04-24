@@ -1,46 +1,51 @@
 {% extends "base.html" %} {% from "jinja_helpers.html" import render_field %} {%
-    from "jinja_helpers.html" import render_button %}{% from "jinja_helpers.html"
-    import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
+from "jinja_helpers.html" import render_button %}{% from "jinja_helpers.html"
+import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
 <h1>Profil Pacjenta, {{patient.name}}</h1>
 <h2>Dane Medyczne</h2>
 <ul class="list-group list-group-flush" id="comments">
-    {% for meddata in patient.medicalRecord %}
-    <li class="list-group-item" style="border: 2px solid lightgrey">
-      <b>Data zamieszczenia: {{meddata.date}} </b>
-      <br>
-      Autor: {{meddata.user_id}}  
-      <br />
-      Pacjent: {{meddata.patient_id}}
-      <br />
-      Tytuł: {{meddata.title}}
-      <br />
-      Diagnoza: {{meddata.diagnosis}} <br />
-    </li>
-    {% endfor %}
-  </ul>
+  {% for meddata in patient.medicalRecord %}
+  <li class="list-group-item" style="border: 2px solid lightgrey">
+    <b>Data zamieszczenia: {{meddata.date}} </b>
+    <br />
+    Autor: {{meddata.user_id}}
+    <br />
+    Pacjent: {{meddata.patient_id}}
+    <br />
+    Tytuł: {{meddata.title}}
+    <br />
+    Diagnoza: {{meddata.diagnosis}} <br />
+  </li>
+  {% endfor %}
+</ul>
 
-  <br />
-  <div class="shadow p-3 mb-5 bg-body rounded">
-    <form method="post" novalidate="true">
-      <br />
-      {{ medform.csrf_token }} {{medform.hidden_tag()}} {{render_field(medform.title)}}
-      <br />
-      {{medform.text}}
-      <br />
-      <br />
-      {{medform.file}}
-      <br />
-      <br />
-      {{render_button(medform.submit)}}
-    </form>
-  </div>
+<br />
+<div class="shadow p-3 mb-5 bg-body rounded">
+  <form
+    method="post"
+    novalidate="true"
+    action="{{ url_for('views.addPatMed', patientId = patient.id) }}"
+  >
+    <br />
+    {{ medform.csrf_token }} {{medform.hidden_tag()}}
+    {{render_field(medform.title)}}
+    <br />
+    {{medform.text}}
+    <br />
+    <br />
+    {{medform.file}}
+    <br />
+    <br />
+    {{render_button(medform.submit)}}
+  </form>
+</div>
 <h2>Opinie</h2>
 <ul class="list-group list-group-flush" id="comments">
-  {% for comment in user.comments %}
+  {% for comment in patient.opinions %}
   <li class="list-group-item" style="border: 2px solid lightgrey">
     <b>Data zamieszczenia: {{comment.date}} </b>
     <br />
-    Autor: {{user.name}}  
+    Autor: {{comment.user_id}}
     <br />
     {{comment.text}} <br />
     <button type="button" class="close" onClick="deleteCom('{{ comment.id }}')">
@@ -50,13 +55,13 @@
   {% endfor %}
 </ul>
 
-<form method="POST">
-  <textarea name="comment" id="comment" class="form-control"></textarea>
+<form
+  method="POST"
+  action="{{ url_for('views.addPatCom', patientId = patient.id) }}"
+>
+  {{ comform.csrf_token }}{{comform.hidden_tag()}} {{comform.text}}
   <br />
-  <div align="center">
-    <button type="submit" class="btn btn-primary">Dodaj komentarz</button>
-  </div>
+  {{render_button(comform.submit)}}
 </form>
-
 
 {%endblock%}
