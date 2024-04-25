@@ -1,19 +1,28 @@
-from flask import Flask
+from flask import Flask 
 from flask_sqlalchemy import SQLAlchemy
 from os import path 
 from flask_login import LoginManager
+from flask_migrate import Migrate
+
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
-
 
 def create_app():
     """
     Fukncja tworząca aplikacje hosta
     """
+
     app = Flask(__name__)
+    
+    
+    
     app.config['SECRET_KEY'] = 'Siemano2137'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SECURITY_REGISTERABLE'] = True
+    app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
+    
+    migrate = Migrate(app, db) # python -m flask --app main.py db init #flask db upgrade
     db.init_app(app)
     
     login_manager = LoginManager()
@@ -38,7 +47,8 @@ def create_app():
     def load_user(id):
         return User.query.get(int(id))
     
-   
+    
+    
     
     return app
 

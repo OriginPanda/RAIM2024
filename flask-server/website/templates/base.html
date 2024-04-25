@@ -9,36 +9,46 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <title>{%block title%}Home{%endblock%}</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+    <title>{%block title%}Med-Wiz{%endblock%}</title>
   </head>
 
   <body>
     <nav
       class="navbar navbar-expand-lg navbar-dark"
-      style="background-color: #1c4b2a"
+      style="background-color: #495e57"
     >
+      <a class="navbar-brand" href="#">SIEMA.Inc</a>
       <button
         class="navbar-toggler"
         type="button"
         data-toggle="collapse"
-        data-target="#navbar"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="#"> SIEMA.inc </a>
-      <div class="collapse navbar-collapse" id="navbar">
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           {% if user.is_authenticated %}
-          <a class="nav-item nav-link" id="login" href="/">Home</a>
+          <a class="nav-item nav-link active" href="/"
+            >Home <span class="sr-only">(current)</span></a
+          >
           <a class="nav-item nav-link" id="login" href="/logout">Logout</a>
-          <a class="nav-item nav-link">{{user.name}}</a>
-
+          <a class="nav-item nav-link" href="{{url_for('views.patients')}}">Patients</a>
+          <a class="nav-item nav-link" href="/">{{user.name}}</a>
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="login" href="/sign-up"
             >Rejestracja</a
           >
           {% endif %}
+          <a class="nav-item nav-link disabled" id="login" href="#">Settings</a>
         </div>
       </div>
     </nav>
@@ -71,7 +81,6 @@
 
     <div class="container">{%block content%} {%endblock%}</div>
 
-    
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

@@ -1,51 +1,29 @@
-{% extends "base.html" %} {%block title%}Med-Wiz Rejestracja{%endblock%} {%block
-content%}
 
-
-<form method="post">
+{% extends "base.html" %}{% from "jinja_helpers.html" import render_field %} {%
+  from "jinja_helpers.html" import render_button %} {%block title%}Med-Wiz
+  Rejestracja{%endblock%} {%block content%}
   <br />
-  <h2 align="Center">Rejestracja</h2>
-  <div class="form-group">
-    <label for="email">email</label>
-    <input
-      type="email"
-      class="form-control"
-      id="email"
-      name="email"
-      placeholder="Wpisz email"
-    />
-  </div>
-  <div class="form-group">
-    <label for="name">Indetyfikator</label>
-    <input
-      type="text"
-      class="form-control"
-      id="name"
-      name="name"
-      placeholder="Wpisz Indetyfikator"
-    />
-  </div>
-  <div class="form-group">
-    <label for="password">Hasło</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password1"
-      name="password1"
-      placeholder="Wpisz hasło"
-    />
-  </div>
-  <div class="form-group">
-    <label for="password">Potwierdz Hasło</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password2"
-      name="password2"
-      placeholder="Potwierdz hasło"
-    />
+  <div class="shadow p-3 mb-5 bg-body rounded">
+  <form method="post" novalidate="true">
+    {{ form.csrf_token }} {{form.hidden_tag()}}{{render_field(form.name)}}
+    <br />
+    {{render_field(form.email)}}
+    <br />
+    {{render_field(form.password)}}
+    <br />
+    {{render_field(form.repassword)}}
+    <br />
+    {{render_button(form.submit)}}
+  </form>
   </div>
   <br />
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-{%endblock%}
+  <table class="table table-hover table-bordered table-striped">
+  {% for user in users %} 
+  <tr>
+  <td>
+  {{user.id}}. {{user.name}} - {{user.email}} 
+  </td>
+  </tr>
+  {% endfor %}
+  </table>
+  {%endblock%}
