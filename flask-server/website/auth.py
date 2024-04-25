@@ -61,7 +61,7 @@ def signup():
     if form.validate_on_submit():     
         user = User.query.filter_by(email = form.email.data).first()
         if user is None:
-            user = User(email=form.email.data, name=form.name.data, password=generate_password_hash(form.password.data, method='scrypt'))
+            user = User(email=form.email.data, name=form.name.data, password=generate_password_hash(form.password.data, method='sha256'))
             db.session.add(user)
             db.session.commit()
             flash('Rejestracja udana',category='success')

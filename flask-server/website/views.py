@@ -15,17 +15,9 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET','POST'])
 @login_required
 def home():
-    if request.method =='POST':
-        comment = request.form.get('comment')
-        if len(comment) < 1:
-            flash('Nie zostało nic wpisane', category='error')
-        else:
-            new_comment = Comment(text=comment, user_id=current_user.id)
-            db.session.add(new_comment)
-            db.session.commit()
-            flash('Dodano', category='success')
+    comform = CommentForm()
             
-    return render_template("home.html", user=current_user)
+    return render_template("home.html", user=current_user, comform = comform)
 
 @views.route('/com/delete', methods=['POST'])
 @login_required
@@ -98,6 +90,10 @@ def delete_patient():
     patientId = patient['patientId']
     patient = Patient.query.get_or_404(patientId)
     if patient:
+        for meddata in patient.medicalRecord:
+            db.session.delete(meddata)
+        for opinion in patient.opinions:
+            db.session.delete(opinion)
         #if patient.group_id == current_user.group_id:
         db.session.delete(patient)
         db.session.commit()
@@ -125,6 +121,21 @@ def addPatMed(patientId):
          
     return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient, comform = comform)
 
+@views.route('/patients/delMed', methods=['POST'])
+@login_required
+def deleteMedData():
+    medicaldata = json.loads(request.data)
+    medicaldataId = medicaldata['medicaldataId']
+    medicaldata = MedicalData.query.get_or_404(medicaldataId)
+    if medicaldata:
+        #if medicaldata.group_id == current_user.group_id:
+        db.session.delete(medicaldata)
+        db.session.commit()
+     
+    return jsonify({})
+
+
+#TODO Do połączeniea addPacCom i addCom
 @views.route('/patients/addCom/<int:patientId>', methods=['POST'])
 @login_required
 def addPatCom(patientId):
@@ -146,3 +157,16 @@ def addPatCom(patientId):
         return redirect('/patients/'+str(patientId))
              
     return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient, comform = comform)
+
+@views.route('/com/add', methods=['POST'])
+@login_required
+def addCom():
+    comform = CommentForm()
+    
+    if comform.validate_on_submit():
+        new_comment = Comment(text=comform.text.data, user_id=current_user.id)
+        db.session.add(new_comment)
+        db.session.commit()
+        return redirect('/')
+            
+    return redirect('/')
