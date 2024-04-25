@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request 
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField , SubmitField, IntegerField
-from wtforms import DecimalField, RadioField, SelectField, TextAreaField, FileField
+from wtforms import DecimalField, RadioField, SelectField, TextAreaField
 from wtforms.validators import InputRequired, DataRequired, EqualTo, Email, ValidationError, Length
 from wtforms.widgets import TextArea
-
+from flask_wtf.file import FileField
 
 
 class RegisterForm  (FlaskForm): 
@@ -36,18 +36,18 @@ class PatientForm(FlaskForm):
         if len(check) != 11:
             raise ValidationError("Błędny pesel")
         
-FILE_TYPES = set(['txt', 'doc', 'docx', 'odt', 'pdf', 'rtf', 'text', 'wks', 'wps', 'wpd','png','jpeg']) 
+FILE_TYPES = set(['png','jpeg','bmp']) 
 class MedDataForm(FlaskForm):  
     
     
     title = StringField('Tytuł', validators=[DataRequired()])
     #patient_id = IntegerField('Id Pacjenta',validators=[DataRequired()])#,render_kw={'disabled':''} moze sie przydać
-    text = StringField('Komentarz', validators=[DataRequired(),Length(max=500,message="Wiadomość za długa")])
+    text = StringField('Komentarz', validators=[DataRequired(),Length(max=500,message="Wiadomość za długa")], widget=TextArea(),render_kw={'class': 'form-control'})
     file = FileField('Dodaj Plik')
     
     # def validate_file(form, field):
-    #     if field.data:
-    #         filename = str(field.data.filename)
+    #     if field.data != None:
+    #         filename = field.data
     #         if '.' in filename and filename.rsplit('.', 1)[1]in FILE_TYPES:
     #             raise ValidationError("Zły rodzaj pliku")
         
