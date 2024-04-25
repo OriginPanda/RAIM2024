@@ -15,6 +15,14 @@ import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
     Tytuł: {{meddata.title}}
     <br />
     Diagnoza: {{meddata.diagnosis}} <br />
+    {% if meddata.filename%} obraz: <br />
+    <img
+      src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
+      width="250"
+      height="250"
+    />
+
+    {% endif %}
     <button type="button" class="close" onClick="deleteMed('{{ meddata.id }}')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -27,14 +35,17 @@ import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
   <form
     method="post"
     novalidate="true"
+    enctype="multipart/form-data"
     action="{{ url_for('views.addPatMed', patientId = patient.id) }}"
   >
     <br />
     {{ medform.csrf_token }} {{medform.hidden_tag()}}
     {{render_field(medform.title)}}
     <br />
-    {{medform.text}}
+    {{render_field(medform.text)}}
     <br />
+    <br />
+    {{medform.file.label}}
     <br />
     {{medform.file}}
     <br />
@@ -62,7 +73,8 @@ import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
   method="POST"
   action="{{ url_for('views.addPatCom', patientId = patient.id) }}"
 >
-  {{ comform.csrf_token }}{{comform.hidden_tag()}} {{comform.text}}
+  {{ comform.csrf_token }}{{comform.hidden_tag()}}
+  {{render_field(comform.text)}}
   <br />
   {{render_button(comform.submit)}}
 </form>

@@ -3,3 +3,4 @@ instance/
 migrations/
 test_data/
 __pycache__/
+website/static/images

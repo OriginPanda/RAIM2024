@@ -2,12 +2,13 @@
 Blueprinty konkretnych widokow na stonie
 """
 import json
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, current_app as app
 from flask_login import login_required, current_user
 from .models import Comment, Patient, MedicalData
 from .forms import PatientForm, MedDataForm, CommentForm
 from . import db
-
+from os import path 
+from werkzeug.utils import secure_filename
 
 
 views = Blueprint('views', __name__)
@@ -112,12 +113,24 @@ def addPatMed(patientId):
     
     if medform.submit.data and medform.validate_on_submit():
             # new_meddata = MedicalData(diagnosis=medform.text, user_id=current_user.id, patient_id = patientId, title=medform.title)
-            new_meddata = MedicalData(diagnosis=medform.text.data, user_id=current_user.id, patient_id = patientId, title=medform.title.data)
+            filename = ''
+            request.files['file'] # z jakiegoś powodu trzeba odpalić request po prostu i wtedy dopiero działa
+            
+            if medform.file.data:
+                file = request.files['file'] 
+                filename = secure_filename(file.filename)
+                print(secure_filename("siema.txt")) # nie wiem czemu nie działa
+                print(path.join(app.config['IMAGE_UPLOADS'], filename))
+                medform.file.data.save(path.join(app.config['IMAGE_UPLOADS'], filename))
+            #image.save(path.join(app.config["IMAGE_UPLOADS"], filename))
+            print(filename)
+            new_meddata = MedicalData(diagnosis=medform.text.data, user_id=current_user.id, patient_id = patientId, title=medform.title.data, filename = filename)
             db.session.add(new_meddata)
             db.session.commit()
             medform.data.clear()
             flash('Dodano dane', category='success')
             return redirect('/patients/'+str(patientId))
+
          
     return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient, comform = comform)
 
@@ -170,3 +183,4 @@ def addCom():
         return redirect('/')
             
     return redirect('/')
+

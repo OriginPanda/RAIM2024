@@ -21,11 +21,11 @@ class MedicalData(db.Model):
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    diagnosis = db.Column(db.String(500))
+    diagnosis = db.Column(db.String(), nullable=True)
     #comments = db.relationship('Comment')
     
     ## Placeholders
-    data_url = None #db.Column()
+    filename = db.Column(db.String(500))
     
     #TODO dodac reszte danych
     
