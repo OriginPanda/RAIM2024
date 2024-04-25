@@ -1,6 +1,7 @@
 website/__pycache__/
 instance/
+migrations/
 test_data/
-website/static/images
 __pycache__/
+website/static/images
 migrations/
