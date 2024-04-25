@@ -15,6 +15,9 @@ import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
     Tytuł: {{meddata.title}}
     <br />
     Diagnoza: {{meddata.diagnosis}} <br />
+    <button type="button" class="close" onClick="deleteMed('{{ meddata.id }}')">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </li>
   {% endfor %}
 </ul>
