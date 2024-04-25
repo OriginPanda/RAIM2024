@@ -40,8 +40,14 @@
             >Home <span class="sr-only">(current)</span></a
           >
           <a class="nav-item nav-link" id="login" href="/logout">Logout</a>
+
+          <a class="nav-item nav-link" id="login" href="/settings">Settings</a>
+
+
+
           <a class="nav-item nav-link" href="{{url_for('views.patients')}}">Patients</a>
           <a class="nav-item nav-link" href="/">{{user.name}}</a>
+          
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="login" href="/sign-up"
