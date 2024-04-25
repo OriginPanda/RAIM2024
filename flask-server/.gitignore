@@ -1,4 +1,5 @@
 website/__pycache__/
 instance/
+migrations/
 test_data/
-website/static/kratos.png
+__pycache__/

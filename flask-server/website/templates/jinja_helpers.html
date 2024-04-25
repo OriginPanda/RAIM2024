@@ -1,0 +1,30 @@
+{% macro render_field(field) %}
+    <div class="form-group">
+        {{ field.label(class="form-control-label font-weight-bold text-muted") }}
+        {% if field.errors %}
+            {{ field(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in field.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% elif field.data != None %}
+            {{ field(class="form-control is-valid") }}
+        {% else %}
+            {{ field(class="form-control") }}
+        {% endif %}
+
+
+    </div>
+{% endmacro %}
+
+{%  macro render_checkbox(checkbox) %}
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+    {{checkbox.label(class="form-check-label", for="flexCheckDefault") }}
+  </div>
+{%  endmacro %}
+
+{%  macro render_button(button) %}
+    {{ button(class="btn btn-success") }}
+{%  endmacro %}
