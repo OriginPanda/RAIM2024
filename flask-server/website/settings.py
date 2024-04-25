@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from .models import User
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import db
 
@@ -18,6 +19,6 @@ def user_settings ():
         print(user)
         user.name = request.form.get("name")
         user.email = request.form.get("email")
-        # user.password = request.form.get("password")
+        user.password = generate_password_hash(request.form.get("password"), method='scrypt')
         db.session.commit()
     return render_template("settings.html", user=current_user)
