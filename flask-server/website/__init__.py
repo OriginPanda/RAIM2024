@@ -14,7 +14,7 @@ def create_app():
     """
 
     app = Flask(__name__)
-    app.app_context().push()
+    
     
     
     app.config['SECRET_KEY'] = 'Siemano2137'
@@ -41,6 +41,7 @@ def create_app():
     app.register_blueprint(auth,url_prefix='/')
     
     with app.app_context():
+
         db.create_all()
     
     

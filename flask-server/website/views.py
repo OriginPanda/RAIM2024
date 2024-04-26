@@ -119,7 +119,9 @@ def addPatMed(patientId):
             if medform.file.data:
                 file = request.files['file'] 
                 filename = secure_filename(file.filename)
-                print(secure_filename("siema.txt")) # nie wiem czemu nie działa
+                
+                #print(secure_filename("siema.txt")) # nie wiem czemu nie działa
+                
                 print(path.join(app.config['IMAGE_UPLOADS'], filename))
                 medform.file.data.save(path.join(app.config['IMAGE_UPLOADS'], filename))
             #image.save(path.join(app.config["IMAGE_UPLOADS"], filename))

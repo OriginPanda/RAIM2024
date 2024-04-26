@@ -15,13 +15,18 @@ import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
     Tytuł: {{meddata.title}}
     <br />
     Diagnoza: {{meddata.diagnosis}} <br />
-    {% if meddata.filename%} obraz: <br />
+    {% if meddata.filename.lower().endswith('.mp4')%}
+    <video controls autoplay>
+      <source src="{{ url_for('static', filename='images/'+ meddata.filename) }}" type="video/mp4">
+     </video>
+
+    {% elif meddata.filename%} obraz: <br />
     <img
       src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
       width="250"
       height="250"
     />
-
+    
     {% endif %}
     <button type="button" class="close" onClick="deleteMed('{{ meddata.id }}')">
       <span aria-hidden="true">&times;</span>
