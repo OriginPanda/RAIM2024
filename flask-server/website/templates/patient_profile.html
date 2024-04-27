@@ -5,28 +5,32 @@ import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
 <h2>Dane Medyczne</h2>
 <ul class="list-group list-group-flush" id="comments">
   {% for meddata in patient.medicalRecord %}
-  <li class="list-group-item" style="border: 2px solid lightgrey">
-    <b>Data zamieszczenia: {{meddata.date}} </b>
+  <li class="list-group-item" style="border: 2px solid lightgrey; font-size:1.2em;">
+    <b>Data zamieszczenia:</b> {{meddata.date}} 
     <br />
-    Autor: {{meddata.user_id}}
+    <b>Autor:</b> {{users.get(meddata.user_id).name}}
     <br />
-    Pacjent: {{meddata.patient_id}}
+    <b>Pacjent:</b>  {{patient.name}} - {{patient.pesel}}
     <br />
-    Tytuł: {{meddata.title}}
+    <b>Tytuł:</b> {{meddata.title}}
     <br />
-    Diagnoza: {{meddata.diagnosis}} <br />
+    <b>Diagnoza:</b> {{meddata.diagnosis}} <br />
+    <br><br>
     {% if meddata.filename.lower().endswith('.mp4')%}
     <video controls autoplay>
-      <source src="{{ url_for('static', filename='images/'+ meddata.filename) }}" type="video/mp4">
-     </video>
+      <source
+        src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
+        type="video/mp4"
+      />
+    </video>
 
-    {% elif meddata.filename%} obraz: <br />
+    {% elif meddata.filename%}
     <img
       src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
       width="250"
       height="250"
     />
-    
+
     {% endif %}
     <button type="button" class="close" onClick="deleteMed('{{ meddata.id }}')">
       <span aria-hidden="true">&times;</span>
@@ -53,6 +57,13 @@ import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
     {{medform.file.label}}
     <br />
     {{medform.file}}
+    <br />
+    {% if medform.file.errors %}
+      {% for error in medform.file.errors %}
+      <span style="color:red"">{{ error }}</span>
+      {% endfor %}
+
+    {% endif %}
     <br />
     <br />
     {{render_button(medform.submit)}}

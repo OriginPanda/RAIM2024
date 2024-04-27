@@ -42,7 +42,8 @@ class User(db.Model, UserMixin):
     
 class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(50))
-    second_name = db.Column(db.String(50))
-    medicalRecord = db.relationship('MedicalData')
-    
+    name = db.Column(db.String(50))
+    pesel = db.Column(db.Integer, unique=True)
+    date_added = db.Column(db.DateTime(timezone=True), default=func.now())
+    medicalRecord = db.relationship('MedicalData') #TODO zmiana na medical_record jak baza danych sie ogarnie
+    opinions = db.relationship('Comment')
