@@ -64,7 +64,7 @@ def signup():
             flash('Hasła muszą być takie same', category='error')
             
         else:
-            new_user = User(email=email, name=name, password=generate_password_hash(password1, method='scrypt'))
+            new_user = User(email=email, name=name, password=generate_password_hash(password1, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
             
