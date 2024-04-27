@@ -35,6 +35,16 @@ class PatientForm(FlaskForm):
         check = str(field.data)
         if len(check) != 11:
             raise ValidationError("Błędny pesel")
+       
+       
+       
+def FileSizeLimit(max_size_in_mb):
+        max_bytes = max_size_in_mb*1024*1024
+        def file_length_check(form, field):
+            if len(field.data.read()) > max_bytes:
+                raise ValidationError(f"File size must be less than {max_size_in_mb}MB")
+            field.data.seek(0)
+        return file_length_check       
         
 FILE_TYPES = set(['png','jpeg','bmp']) 
 class MedDataForm(FlaskForm):  
@@ -43,8 +53,11 @@ class MedDataForm(FlaskForm):
     title = StringField('Tytuł', validators=[DataRequired()])
     #patient_id = IntegerField('Id Pacjenta',validators=[DataRequired()])#,render_kw={'disabled':''} moze sie przydać
     text = StringField('Komentarz', validators=[DataRequired(),Length(max=500,message="Wiadomość za długa")], widget=TextArea(),render_kw={'class': 'form-control'})
-    file = FileField('Dodaj Plik')
     
+    
+    
+    
+    file = FileField('Dodaj Plik',validators=[FileSizeLimit(max_size_in_mb=1)])
     # def validate_file(form, field):
     #     if field.data != None:
     #         filename = field.data

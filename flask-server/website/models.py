@@ -53,5 +53,5 @@ class Patient(db.Model):
     name = db.Column(db.String(50))
     pesel = db.Column(db.Integer, unique=True)
     date_added = db.Column(db.DateTime(timezone=True), default=func.now())
-    medicalRecord = db.relationship('MedicalData')
+    medicalRecord = db.relationship('MedicalData') #TODO zmiana na medical_record jak baza danych sie ogarnie
     opinions = db.relationship('Comment')

@@ -33,13 +33,13 @@ def create_app():
     
     from .views import views
     from .auth import auth
-    
+    from .settings import settings
     from .models import User, Comment, Patient, MedicalData
     
     
     app.register_blueprint(views,url_prefix='/')
     app.register_blueprint(auth,url_prefix='/')
-    
+    app.register_blueprint(settings,url_prefix='/')
     with app.app_context():
 
         db.create_all()

@@ -4,10 +4,10 @@ Blueprinty konkretnych widokow na stonie
 import json
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, current_app as app
 from flask_login import login_required, current_user
-from .models import Comment, Patient, MedicalData
+from .models import Comment, Patient, MedicalData, User
 from .forms import PatientForm, MedDataForm, CommentForm
 from . import db
-from os import path 
+import os 
 from werkzeug.utils import secure_filename
 
 
@@ -56,32 +56,15 @@ def patients():
 @views.route('/patients/<int:patientId>', methods=['GET','POST'])
 @login_required
 def patientView(patientId):
-    
+    users = User.query.order_by(User.id)
     patient = Patient.query.get_or_404(patientId)
     #if current_user.group_id != patient.group_id 
     #else
     medform = MedDataForm()
     comform = CommentForm()
     
-    if medform.submit.data and medform.validate_on_submit():
-            # new_meddata = MedicalData(diagnosis=medform.text, user_id=current_user.id, patient_id = patientId, title=medform.title)
-            new_meddata = MedicalData(diagnosis=medform.text.data, user_id=current_user.id, patient_id = patientId, title=medform.title.data)
-            db.session.add(new_meddata)
-            db.session.commit()
-            medform.data.clear()
-            flash('Dodano dane', category='success')
-            return redirect('/patients/'+str(patientId))
-        
-    if comform.validate_on_submit():
-        
-        new_comment = Comment(text=comform.text.data, user_id=current_user.id, patient_id = patientId)
-        db.session.add(new_comment)
-        db.session.commit()
-        comform.data.clear()
-        flash('Dodano', category='success')
-        return redirect('/patients/'+str(patientId))
              
-    return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient, comform = comform)
+    return render_template("patient_profile.html",user = current_user, users = users, medform = medform, patient = patient, comform = comform)
 
 
 @views.route('/patients/delete', methods=['POST'])
@@ -108,6 +91,7 @@ def addPatMed(patientId):
     patient = Patient.query.get_or_404(patientId)
     #if current_user.group_id != patient.group_id 
     #else
+    users = User.query.order_by(User.id)  
     medform = MedDataForm()
     comform = CommentForm()
     
@@ -120,10 +104,10 @@ def addPatMed(patientId):
                 file = request.files['file'] 
                 filename = secure_filename(file.filename)
                 
-                #print(secure_filename("siema.txt")) # nie wiem czemu nie działa
+                print(os.path.join(app.config['IMAGE_UPLOADS'], filename))
+                medform.file.data.save(os.path.join(app.config['IMAGE_UPLOADS'], filename))
                 
-                print(path.join(app.config['IMAGE_UPLOADS'], filename))
-                medform.file.data.save(path.join(app.config['IMAGE_UPLOADS'], filename))
+                
             #image.save(path.join(app.config["IMAGE_UPLOADS"], filename))
             print(filename)
             new_meddata = MedicalData(diagnosis=medform.text.data, user_id=current_user.id, patient_id = patientId, title=medform.title.data, filename = filename)
@@ -134,7 +118,7 @@ def addPatMed(patientId):
             return redirect('/patients/'+str(patientId))
 
          
-    return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient, comform = comform)
+    return render_template("patient_profile.html", user = current_user, users = users, medform = medform, patient = patient, comform = comform)
 
 @views.route('/patients/delMed', methods=['POST'])
 @login_required
@@ -143,6 +127,8 @@ def deleteMedData():
     medicaldataId = medicaldata['medicaldataId']
     medicaldata = MedicalData.query.get_or_404(medicaldataId)
     if medicaldata:
+        os.remove(os.path.join(app.config['IMAGE_UPLOADS'], medicaldata.filename))
+        print(os.path.join(app.config['IMAGE_UPLOADS'], medicaldata.filename))
         #if medicaldata.group_id == current_user.group_id:
         db.session.delete(medicaldata)
         db.session.commit()
@@ -158,6 +144,7 @@ def addPatCom(patientId):
     patient = Patient.query.get_or_404(patientId)
     #if current_user.group_id != patient.group_id 
     #else
+    users = User.query.order_by(User.id)
     medform = MedDataForm()
     comform = CommentForm()
     
@@ -171,7 +158,7 @@ def addPatCom(patientId):
         flash('Dodano', category='success')
         return redirect('/patients/'+str(patientId))
              
-    return render_template("patient_profile.html", user = current_user, medform = medform, patient = patient, comform = comform)
+    return render_template("patient_profile.html", user = current_user, users = users, medform = medform, patient = patient, comform = comform)
 
 @views.route('/com/add', methods=['POST'])
 @login_required

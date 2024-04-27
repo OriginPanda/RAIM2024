@@ -24,7 +24,16 @@
     {{checkbox.label(class="form-check-label", for="flexCheckDefault") }}
   </div>
 {%  endmacro %}
-
+{%  macro render_filefield(input) %}
+  {% if input.errors %}
+            {{ input(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in input.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+    {% endif %}
+{%  endmacro %}
 {%  macro render_button(button) %}
     {{ button(class="btn btn-success") }}
 {%  endmacro %}
