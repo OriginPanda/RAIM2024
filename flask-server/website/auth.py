@@ -6,7 +6,9 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
-from .forms import MyForm
+from .forms import RegisterForm, LoginForm
+
+
 
 auth = Blueprint('auth', __name__)
 
@@ -14,21 +16,27 @@ auth = Blueprint('auth', __name__)
 def login():
     """Logowanie uzytkownika
     """
-    if request.method =='POST':
-        email = request.form.get('email') # moze zmienic na indetifikator czy cos
-        password = request.form.get('password')
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data # moze zmienic na indetifikator czy cos
+        password = form.password.data
         
         user = User.query.filter_by(email = email).first()
         if user:
             if check_password_hash(user.password, password):
                 flash('Zalogowano', category='success')
-                login_user(user, remember=True) # remember pamieta ze uzytkownik jest zalogowany ze strony serwera
+                login_user(user, remember=form.remember.data) # remember pamieta ze uzytkownik jest zalogowany ze strony serwera
+                print(form.remember.data)
+                form.data.clear()
                 return redirect(url_for('views.home'))
             else:
-                flash('Złe hasło', category='error')
+                form.password.errors.append("Złe hasło")
         else:
-           flash('Użytkownik nie istnieje', category='error') 
-    return render_template("login.html", user=current_user)
+           form.email.errors.append("Użytkownik nie istnieje")
+           form.password.errors.append("")
+    
+    
+    return render_template("login.html", user=current_user, form = form)
 
 
 @auth.route('/logout')
@@ -48,28 +56,19 @@ def signup():
     
     Return: html remplate i argument user do wykorzystania w html
     """
-
-
-    if request.method =='POST':
-        
-        email = request.form.get('email')
-        name = request.form.get('name')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
-        
-        user = User.query.filter_by(email = email).first()
-        if user:
-            flash('Podany email jest przypisany do innego konta', category='error') 
-        elif password1 != password2:
-            flash('Hasła muszą być takie same', category='error')
-            
-        else:
-            new_user = User(email=email, name=name, password=generate_password_hash(password1, method='sha256'))
-            db.session.add(new_user)
+ 
+    form = RegisterForm()     
+    if form.validate_on_submit():     
+        user = User.query.filter_by(email = form.email.data).first()
+        if user is None:
+            user = User(email=form.email.data, name=form.name.data, password=generate_password_hash(form.password.data, method='sha256'))
+            db.session.add(user)
             db.session.commit()
-            
             flash('Rejestracja udana',category='success')
-            return redirect(url_for('views.home'))
-            
-            
-    return render_template("sign-up.html", user=current_user)
+            form.data.clear()
+            return redirect(url_for('auth.login'))
+        else:
+           form.email.errors.append("Użytkownik o podanym adresie istnieje")
+    users = User.query.order_by(User.date_added)          
+    return render_template("sign-up.html", user=current_user, form = form, users=users)
+
