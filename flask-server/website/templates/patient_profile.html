@@ -17,10 +17,12 @@ import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
     <b>Diagnoza:</b> {{meddata.diagnosis}} <br />
     <br><br>
     {% if meddata.filename.lower().endswith('.mp4')%}
-    <video controls autoplay>
+    <video controls autoplay width="250"
+    height="250">
       <source
         src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
         type="video/mp4"
+        
       />
     </video>
 
