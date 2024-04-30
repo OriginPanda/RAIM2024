@@ -127,8 +127,9 @@ def deleteMedData():
     medicaldataId = medicaldata['medicaldataId']
     medicaldata = MedicalData.query.get_or_404(medicaldataId)
     if medicaldata:
-        os.remove(os.path.join(app.config['IMAGE_UPLOADS'], medicaldata.filename))
-        print(os.path.join(app.config['IMAGE_UPLOADS'], medicaldata.filename))
+        if medicaldata.filename:
+            os.remove(os.path.join(app.config['IMAGE_UPLOADS'], medicaldata.filename))
+            print(os.path.join(app.config['IMAGE_UPLOADS'], medicaldata.filename))
         #if medicaldata.group_id == current_user.group_id:
         db.session.delete(medicaldata)
         db.session.commit()
