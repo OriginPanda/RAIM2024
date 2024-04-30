@@ -6,21 +6,26 @@ from PIL import Image
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(1000))
+    text = db.Column(db.String(500))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    data_id = db.Column(db.Integer, db.ForeignKey('medical_data.id'))  
+    
+    #data_id = db.Column(db.Integer, db.ForeignKey('medical_data.id'))
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))  
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     
-    imagepath = db.Column(db.String(1000))
+    imagename = db.Column(db.String(500))
 
 class MedicalData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(500))
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    comments = db.relationship('Comment')
+    diagnosis = db.Column(db.String(), nullable=True)
+    #comments = db.relationship('Comment')
     
     ## Placeholders
-    data_url = None #db.Column()
+    filename = db.Column(db.String(500))
     
     #TODO dodac reszte danych
     
@@ -33,12 +38,15 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
     name = db.Column(db.String(50))
-    
+    date_added = db.Column(db.DateTime(timezone=True), default=func.now())
     # second_name = db.Column(db.String(50))
     # address =  db.Column(db.String(50))
     # phone_number = db.Column(db.Integer)
     
     comments = db.relationship('Comment')
+    medicalDataAdded = db.relationship('MedicalData')
+    def __repr__(self):
+        return '<Name %r>' % self.name
     
 class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
