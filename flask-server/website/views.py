@@ -4,7 +4,7 @@ Blueprinty konkretnych widokow na stonie
 import json
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, current_app as app
 from flask_login import login_required, current_user
-from .models import Comment, Patient, MedicalData, User
+from .models import Comment, Patient, MedicalData, User, user_patient
 from .forms import PatientForm, MedDataForm, CommentForm
 from . import db
 import os 
@@ -51,7 +51,7 @@ def patients():
             return redirect(url_for('views.patients'))
         else:
             form.pesel.errors.append("Użytkownik o podanym peselu już istnieje")  
-    patients = db.session.query(User).options(joinedload(User.patient)).all()         
+    patients = db.session.query(Patient).join(user_patient).join(User).filter_by(id = current_user.id).all()
     return render_template("patients.html", user = current_user, form = form, patients = patients)
             
     #return render_template("home.html", user=current_user)

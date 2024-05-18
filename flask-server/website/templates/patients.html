@@ -13,15 +13,15 @@ Rejestracja{%endblock%} {%block content%}
 </div>
 <br />
 <table class="table table-hover table-bordered table-striped">
-  {% for user in patients %}
+  {% for patient in patients %}
   <tr>
     <td>
-      {{user.id}}. <a href="patients/{{user.id}}">{{user.patient}}</a> -
-      Pesel: {{user.pesel}}
+      {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
+      Pesel: {{patient.pesel}}
       <button
         type="button"
         class="close"
-        onClick="deletePatient('{{ user.id }}')"
+        onClick="deletePatient('{{ patient.id }}')"
       >
         <span aria-hidden="true">&times;</span>
       </button>
