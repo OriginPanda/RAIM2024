@@ -2,7 +2,7 @@ from website import create_app
 
 app = create_app()
 
-# testowanie do react.js
+# testowanie do react.js 
 # @app.route("/members")
 # def members():
 #     return{"members": ["Member1","Member2","Member3"]}

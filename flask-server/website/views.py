@@ -40,10 +40,10 @@ def patients():
     form = PatientForm()     
     if form.validate_on_submit():     
         patient = Patient.query.filter_by(pesel = form.pesel.data).first()
-        user = User.query.filter_by(id=current_user.id).first()
+        #user = User.query.filter_by(id=current_user.id).first()
         if patient is None:
             patient = Patient(name=form.name.data, pesel=form.pesel.data)
-            user.patient.append(patient)
+            #user.patient.append(patient)
             db.session.add(patient)
             db.session.commit()
             flash('Dodano pacjenta',category='success')
@@ -51,11 +51,11 @@ def patients():
             return redirect(url_for('views.patients'))
         else:
             form.pesel.errors.append("Użytkownik o podanym peselu już istnieje")  
-    patients = db.session.query(Patient).join(user_patient).join(User).filter_by(id = current_user.id).all()
+    patients = Patient.query.order_by(Patient.id)     
     return render_template("patients.html", user = current_user, form = form, patients = patients)
             
     #return render_template("home.html", user=current_user)
-    
+
 @views.route('/patients/<int:patientId>', methods=['GET','POST'])
 @login_required
 def patientView(patientId):
@@ -86,6 +86,19 @@ def delete_patient():
         db.session.commit()
      
     return jsonify({})
+
+@views.route('/patients/addPatient', methods=['GET','POST'])
+@login_required
+def addPatient():
+    patient = json.loads(request.data)
+    patientId = patient['patientId']
+    patient = Patient.query.get_or_404(patientId)
+    user = User.query.filter_by(id=current_user.id).first()
+    user.patient.append(patient)
+    db.session.commit()
+    return render_template("patients.html", user = current_user)
+
+             
 
 @views.route('/patients/addMed/<int:patientId>', methods=['POST'])
 @login_required

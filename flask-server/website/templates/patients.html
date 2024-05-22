@@ -12,6 +12,25 @@ Rejestracja{%endblock%} {%block content%}
   </form>
 </div>
 <br />
+<h1>Moje pacjenty</h1>
+<table class="table table-hover table-bordered table-striped">
+  {% for patient in user.patient %}
+  <tr>
+    <td>
+      {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
+      Pesel: {{patient.pesel}}
+      <button
+        type="button"
+        class="close"
+        onClick="deletePatient('{{ patient.id }}')"
+      >
+        <span aria-hidden="+-true">&times;</span>
+      </button>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<h1>Wszystkie pacjenty</h1>
 <table class="table table-hover table-bordered table-striped">
   {% for patient in patients %}
   <tr>
@@ -25,6 +44,14 @@ Rejestracja{%endblock%} {%block content%}
       >
         <span aria-hidden="true">&times;</span>
       </button>
+      <button
+        type="button"
+        class="close"
+        onClick="addPatient('{{ patient.id }}')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      
     </td>
   </tr>
   {% endfor %}

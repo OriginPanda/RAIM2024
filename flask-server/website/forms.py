@@ -55,7 +55,7 @@ class MedDataForm(FlaskForm):
     title = StringField('Tytuł', validators=[DataRequired()])
     #patient_id = IntegerField('Id Pacjenta',validators=[DataRequired()])#,render_kw={'disabled':''} moze sie przydać
     text = StringField('Komentarz', validators=[DataRequired(),Length(max=500,message="Wiadomość za długa")], widget=TextArea(),render_kw={'class': 'form-control'})
-    
+
     
     
     
