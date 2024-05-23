@@ -4,7 +4,7 @@ Blueprinty konkretnych widokow na stonie
 import json
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, current_app as app
 from flask_login import login_required, current_user
-from .models import Comment, Patient, MedicalData, User, user_patient
+from .models import Comment, Patient, MedicalData, User
 from .forms import PatientForm, MedDataForm, CommentForm
 from . import db
 import os 
@@ -94,11 +94,22 @@ def addPatient():
     patientId = patient['patientId']
     patient = Patient.query.get_or_404(patientId)
     user = User.query.filter_by(id=current_user.id).first()
-    user.patient.append(patient)
+    patient.users.append(user)
+    print(patient.users)
+
     db.session.commit()
     return render_template("patients.html", user = current_user)
 
-             
+@views.route('/patients/deleteFromMyPatients', methods=['GET','POST'])
+@login_required
+def deleteFromMyPatients():
+    patient = json.loads(request.data)
+    patientId = patient['patientId']
+    patient = Patient.query.get_or_404(patientId)
+    user = User.query.filter_by(id=current_user.id).first()
+    patient.users.remove(user)
+    db.session.commit()
+    return render_template("patients.html", user = current_user)             
 
 @views.route('/patients/addMed/<int:patientId>', methods=['POST'])
 @login_required

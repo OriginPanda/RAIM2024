@@ -23,6 +23,14 @@ function addPatient(patientId){
         location.reload();
     });
 }
+function deleteFromMyPatients(patientId){
+    fetch('/patients/deleteFromMyPatients',{
+        method: "POST",
+        body: JSON.stringify({patientId: patientId})
+    }).then((_res) => {
+        location.reload();
+    });
+}
 function deleteMed(medicaldataId){
     fetch('/patients/delMed',{
         method: "POST",

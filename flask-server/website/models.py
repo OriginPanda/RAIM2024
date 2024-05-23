@@ -4,9 +4,6 @@ from sqlalchemy.sql import func
 from os import path 
 from PIL import Image
 
-user_patient = db.Table('user_patient', 
-                        db.Column('user_id', db.Integer, db.ForeignKey('user.id')), 
-                        db.Column('patient_id', db.Integer, db.ForeignKey('patient.id')))
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -44,14 +41,15 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(50))
     name = db.Column(db.String(50))
     date_added = db.Column(db.DateTime(timezone=True), default=func.now())
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     # second_name = db.Column(db.String(50))
     # address =  db.Column(db.String(50))
     # phone_number = db.Column(db.Integer)
     
     comments = db.relationship('Comment')
     medicalDataAdded = db.relationship('MedicalData')
-    patient = db.relationship('Patient', secondary=user_patient, backref='patients')
     def __repr__(self):
         return '<Name %r>' % self.name
     
@@ -63,3 +61,4 @@ class Patient(db.Model):
     date_added = db.Column(db.DateTime(timezone=True), default=func.now())
     medicalRecord = db.relationship('MedicalData') #TODO zmiana na medical_record jak baza danych sie ogarnie
     opinions = db.relationship('Comment')
+    users = db.relationship('User', backref='users')
