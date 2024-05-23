@@ -148,10 +148,14 @@ def addPatMed(patientId):
 @views.route('/patients/delMed', methods=['POST'])
 @login_required
 def deleteMedData():
+    
     medicaldata = json.loads(request.data)
     medicaldataId = medicaldata['medicaldataId']
     medicaldata = MedicalData.query.get_or_404(medicaldataId)
+    
     if medicaldata:
+        if(current_user != medicaldata.user_id):
+            return redirect(url_for('views.deleteMedData'))
         if medicaldata.filename:
             os.remove(os.path.join(app.config['IMAGE_UPLOADS'], medicaldata.filename))
             print(os.path.join(app.config['IMAGE_UPLOADS'], medicaldata.filename))
@@ -162,7 +166,7 @@ def deleteMedData():
     return jsonify({})
 
 
-#TODO Do połączeniea addPacCom i addCom
+
 @views.route('/patients/addCom/<int:patientId>', methods=['POST'])
 @login_required
 def addPatCom(patientId):
