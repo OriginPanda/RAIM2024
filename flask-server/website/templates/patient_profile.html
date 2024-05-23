@@ -1,100 +1,108 @@
-{% extends "base.html" %} {% from "jinja_helpers.html" import render_field %} {%
-from "jinja_helpers.html" import render_button %}{% from "jinja_helpers.html"
-import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
-<h1>Profil Pacjenta, {{patient.name}}</h1>
-<h2>Dane Medyczne</h2>
-<ul class="list-group list-group-flush" id="comments">
-  {% for meddata in patient.medicalRecord %}
-  <li class="list-group-item" style="border: 2px solid lightgrey; font-size:1.2em;">
-    <b>Data zamieszczenia:</b> {{meddata.date}} 
-    <br />
-    <b>Autor:</b> {{users.get(meddata.user_id).name}}
-    <br />
-    <b>Pacjent:</b>  {{patient.name}} - {{patient.pesel}}
-    <br />
-    <b>Tytuł:</b> {{meddata.title}}
-    <br />
-    <b>Diagnoza:</b> {{meddata.diagnosis}} <br />
-    <br><br>
-    {% if meddata.filename.lower().endswith('.mp4')%}
-    <video controls autoplay width="250"
-    height="250">
-      <source
-        src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
-        type="video/mp4"
+{% extends "base.html" %} 
+{% from "jinja_helpers.html" import render_field, render_button, render_checkbox %}
+
+{% block title %}Med-Wiz{% endblock %}
+
+{% block content %}
+<h1 align="center">Profil Pacjenta: {{ patient.name }}</h1>
+
+<div class="container-fluid px-0">
+  <div class="row">
+    <!-- Left Column: Available Patients -->
+    <div class="col-md-2 bg-info">
+      <h2>Dostępni pacjenci</h2>
+      <ul class="list-group">
+        {% for patients in yourpatients %}
+        <li class="list-group-item">
+          {{ patients.name }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Center Column: Medical Data and Form -->
+    <div class="col-md-5">
+      <h2>Dane Medyczne</h2>
+      <div class="shadow p-3 mb-5 bg-body rounded">
+        <form
+          method="post"
+          novalidate="true"
+          enctype="multipart/form-data"
+          action="{{ url_for('views.addPatMed', patientId=patient.id) }}"
+        >
+          <br />
+          {{ medform.csrf_token }} {{ medform.hidden_tag() }}
+          {{ render_field(medform.title) }}
+          <br />
+          {{ render_field(medform.text) }}
+          <br />
+          <br />
+          {{ medform.file.label }}
+          <br />
+          {{ medform.file }}
+          <br />
+          {% if medform.file.errors %}
+            {% for error in medform.file.errors %}
+            <span style="color:red">{{ error }}</span>
+            {% endfor %}
+          {% endif %}
+          <br />
+          <br /><div align="right">
+          {{ render_button(medform.submit) }}
+          </div>
+        </form>
+      </div>
+      <br />
+      <ul class="list-group list-group-flush" id="medicalRecords">
+        {% for meddata in patient.medicalRecord %}
         
-      />
-    </video>
+        <li class="list-group-item" style="font-size:1.2em;">
+          <div class="shadow p-2 mb-5 bg-body rounded">
+          <b>Tytuł:</b> {{ meddata.title }}
+          <br />
+          <b>Data zamieszczenia:</b> {{ meddata.date }} 
+          <br />
+          <b>Pacjent:</b>  {{ patient.name }} : {{ patient.pesel }}
+          <br />
+          <b>Diagnoza:</b> {{ meddata.diagnosis[0:20] }}
+          <br />
+          <br />
+          <div align="right">
+            <a href="{{ url_for('views.viewMedData', meddataId=meddata.id) }}" class="btn btn-primary mt-3">Zobacz Wpis</a>
+            <button type="button" class="btn btn-danger mt-3" onClick="deleteMed('{{ meddata.id }}')">Usun</button>
+          </div>
+        </div>
+        </li>
+        {% endfor %}
+     
+      </ul>
+    </div>
 
-    {% elif meddata.filename%}
-    <img
-      src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
-      width="250"
-      height="250"
-    />
-
-    {% endif %}
-    <button type="button" class="close" onClick="deleteMed('{{ meddata.id }}')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </li>
-  {% endfor %}
-</ul>
-
-<br />
-<div class="shadow p-3 mb-5 bg-body rounded">
-  <form
-    method="post"
-    novalidate="true"
-    enctype="multipart/form-data"
-    action="{{ url_for('views.addPatMed', patientId = patient.id) }}"
-  >
-    <br />
-    {{ medform.csrf_token }} {{medform.hidden_tag()}}
-    {{render_field(medform.title)}}
-    <br />
-    {{render_field(medform.text)}}
-    <br />
-    <br />
-    {{medform.file.label}}
-    <br />
-    {{medform.file}}
-    <br />
-    {% if medform.file.errors %}
-      {% for error in medform.file.errors %}
-      <span style="color:red"">{{ error }}</span>
-      {% endfor %}
-
-    {% endif %}
-    <br />
-    <br />
-    {{render_button(medform.submit)}}
-  </form>
+    <!-- Right Column: Comments and Form -->
+    <div class="col-md-5">
+      <h2>Opinie</h2>
+      <form method="POST" action="{{ url_for('views.addPatCom', patientId=patient.id) }}">
+        {{ comform.csrf_token }}{{ comform.hidden_tag() }}
+        {{ render_field(comform.text) }}
+        <br />
+        {{ render_button(comform.submit) }}
+      </form>
+      <ul class="list-group list-group-flush" id="comments">
+        {% for comment in patient.opinions %}
+        <li class="list-group-item" style="border: 2px solid lightgrey">
+          <b>Data zamieszczenia:</b> {{ comment.date }}
+          <br />
+          Autor: {{ comment.user_id }}
+          <br />
+          {{ comment.text }}
+          <br />
+          <button type="button" class="close" onClick="deleteCom('{{ comment.id }}')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 </div>
-<h2>Opinie</h2>
-<ul class="list-group list-group-flush" id="comments">
-  {% for comment in patient.opinions %}
-  <li class="list-group-item" style="border: 2px solid lightgrey">
-    <b>Data zamieszczenia: {{comment.date}} </b>
-    <br />
-    Autor: {{comment.user_id}}
-    <br />
-    {{comment.text}} <br />
-    <button type="button" class="close" onClick="deleteCom('{{ comment.id }}')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </li>
-  {% endfor %}
-</ul>
-
-<form
-  method="POST"
-  action="{{ url_for('views.addPatCom', patientId = patient.id) }}"
->
-  {{ comform.csrf_token }}{{comform.hidden_tag()}}
-  {{render_field(comform.text)}}
-  <br />
-  {{render_button(comform.submit)}}
-</form>
-
-{%endblock%}
+{% endblock %}

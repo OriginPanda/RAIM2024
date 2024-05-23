@@ -1,0 +1,42 @@
+{% extends "base.html" %} {% from "jinja_helpers.html" import render_field %} {%
+    from "jinja_helpers.html" import render_button %}{% from "jinja_helpers.html"
+    import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
+    <h1>Profil Pacjenta, {{patient.name}}</h1>
+    <h2>Dane Medyczne</h2>
+    <ul class="list-group list-group-flush" id="comments">
+      <li class="list-group-item" style="border: 2px solid lightgrey; font-size:1.2em;">
+        <b>Data zamieszczenia:</b> {{meddata.date}} 
+        <br />
+        <b>Autor:</b> {{users.get(meddata.user_id).name}}
+        <br />
+        <b>Pacjent:</b>  {{patient.name}} - {{patient.pesel}}
+        <br />
+        <b>Tytuł:</b> {{meddata.title}}
+        <br />
+        <b>Diagnoza:</b> {{meddata.diagnosis}} <br />
+        <br><br>
+        {% if meddata.filename.lower().endswith('.mp4')%}
+        <video controls autoplay width="250"
+        height="250">
+          <source
+            src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
+            type="video/mp4"
+            
+          />
+        </video>
+    
+        {% elif meddata.filename%}
+        <img
+          src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
+          width="250"
+          height="250"
+        />
+    
+        {% endif %}
+      </li>
+    </ul>
+    
+    <br />
+    
+    {%endblock%}
+    

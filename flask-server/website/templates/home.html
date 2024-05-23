@@ -1,26 +1,69 @@
-{% extends "base.html" %} {% from "jinja_helpers.html" import render_field %} {%
-  from "jinja_helpers.html" import render_button %}{% from "jinja_helpers.html"
-  import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
-<h1>STRONA GŁÓWNA - Twoje komentarze</h1>
-<ul class="list-group list-group-flush" id="comments">
-  {% for comment in user.comments %}
-  <li class="list-group-item" style="border: 2px solid lightgrey">
-    <b>Data zamieszczenia: {{comment.date}} </b>
-    <br />
-    {{comment.text}} <br />
-    <button type="button" class="close" onClick="deleteCom('{{ comment.id }}')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </li>
-  {% endfor %}
-</ul>
-<form
-  method="POST"
-  action="{{url_for('views.addCom')}}"
->
-  {{ comform.csrf_token }}{{comform.hidden_tag()}} {{comform.text}}
-  <br />
-  {{render_button(comform.submit)}}
-</form>
+{% extends "base.html" %} 
+{% from "jinja_helpers.html" import render_field, render_button, render_checkbox %}
 
-{%endblock%}
+{% block title %}Med-Wiz{% endblock %}
+
+{% block content %}
+<h1 align="center">Strona główna  {{ current_user.name }}</h1>
+
+<div class="container-fluid px-0">
+  <div class="row">
+    <!-- Left Column: Available Patients -->
+    <div class="col-md-2 bg-info">
+      <h2>Dostępni pacjenci</h2>
+      <ul class="list-group">
+        {% for patients in yourpatients %}
+        <li class="list-group-item">
+          {{ patients.name }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Center Column: Medical Data and Form -->
+    <div class="col-md-5">
+      <h2>Nowe Dane</h2>
+      <ul class="list-group list-group-flush" id="medicalRecords">
+        {% for data in meddata %}
+        
+        <li class="list-group-item" style="font-size:1.2em;">
+          <div class="shadow p-3 mb-5 bg-body rounded">
+          <b>Tytuł:</b> {{ data.title }}
+          <br />
+          <b>Data zamieszczenia:</b> {{ data.date }} 
+          <br />
+          <b>Autor:</b> {{ users.get(data.user_id).name }}
+          <br />
+          <b>Pacjent:</b>  {{ patients.get(data.patient_id).name  }} : {{ patients.get(data.patient_id).pesel }}
+          <br />
+          <b>Diagnoza:</b> {{ data.diagnosis }}
+          <br />
+          <br />
+          {% if data.filename.lower().endswith('.mp4') %}
+          <video controls autoplay width="250" height="250">
+            <source
+              src="{{ url_for('static', filename='images/' + data.filename) }}"
+              type="video/mp4"
+            />
+          </video>
+          {% elif data.filename %}
+          <img
+            src="{{ url_for('static', filename='images/' + data.filename) }}"
+            width="250"
+            height="250"
+          />
+          {% endif %}
+          <div align="right">
+            <a href="{{ url_for('views.viewMedData', meddataId=data.id) }}" class="btn btn-primary mt-3">Zobacz Wpis</a>
+          </div>
+        </div>
+        </li>
+        
+        {% endfor %}
+        
+      </ul>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
