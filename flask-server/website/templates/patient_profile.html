@@ -92,7 +92,7 @@
         <li class="list-group-item" style="border: 2px solid lightgrey">
           <b>Data zamieszczenia:</b> {{ comment.date }}
           <br />
-          Autor: {{ comment.user_id }}
+          Autor: {{users.get(comment.user_id).name }}
           <br />
           {{ comment.text }}
           <br />

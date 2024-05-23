@@ -1,42 +1,86 @@
-{% extends "base.html" %} {% from "jinja_helpers.html" import render_field %} {%
-    from "jinja_helpers.html" import render_button %}{% from "jinja_helpers.html"
-    import render_checkbox %}{%block title%}Med-Wiz{%endblock%} {%block content%}
-    <h1>Profil Pacjenta, {{patient.name}}</h1>
-    <h2>Dane Medyczne</h2>
-    <ul class="list-group list-group-flush" id="comments">
-      <li class="list-group-item" style="border: 2px solid lightgrey; font-size:1.2em;">
-        <b>Data zamieszczenia:</b> {{meddata.date}} 
-        <br />
-        <b>Autor:</b> {{users.get(meddata.user_id).name}}
-        <br />
-        <b>Pacjent:</b>  {{patient.name}} - {{patient.pesel}}
-        <br />
-        <b>Tytuł:</b> {{meddata.title}}
-        <br />
-        <b>Diagnoza:</b> {{meddata.diagnosis}} <br />
-        <br><br>
-        {% if meddata.filename.lower().endswith('.mp4')%}
-        <video controls autoplay width="250"
-        height="250">
-          <source
-            src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
-            type="video/mp4"
-            
-          />
-        </video>
-    
-        {% elif meddata.filename%}
-        <img
-          src="{{ url_for('static', filename='images/'+ meddata.filename) }}"
-          width="250"
-          height="250"
-        />
-    
-        {% endif %}
-      </li>
-    </ul>
-    
-    <br />
-    
-    {%endblock%}
-    
+{% extends "base.html" %}
+{% from "jinja_helpers.html" import render_field, render_button, render_checkbox %}
+{% block title %}Med-Wiz{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Profil Pacjenta, {{ patient.name }}</h1>
+    <div class="row">
+        <!-- Kolumna z danymi medycznymi -->
+        <div class="col-md-4">
+            <div class="card my-4">
+                <div class="card-header">
+                    <h2>Dane Medyczne</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush" id="comments">
+                        <li class="list-group-item" style="font-size: 1.2em;">
+                            <p><b>Data zamieszczenia:</b> {{ meddata.date }}</p>
+                            <p><b>Autor:</b> {{ users.get(meddata.user_id).name }}</p>
+                            <p><b>Pacjent:</b> {{ patient.name }}</p>
+                            <p><b>Pesel pacjenta:</b> {{ patient.pesel }}</p>
+                            <p><b>Tytuł wpisu:</b> {{ meddata.title }}</p>
+
+                            {% if meddata.filename.lower().endswith('.mp4') %}
+                            <div class="text-center">
+                                <video controls autoplay width="320" height="240">
+                                    <source src="{{ url_for('static', filename='images/'+ meddata.filename) }}" type="video/mp4"/>
+                                </video>
+                            </div>
+                            {% elif meddata.filename %}
+                            <div class="text-center">
+                                <img src="{{ url_for('static', filename='images/'+ meddata.filename) }}" class="img-fluid" alt="Medical Image"/>
+                            </div>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolumna z diagnozą -->
+        <div class="col-md-4">
+            <div class="card my-4">
+                <div class="card-header">
+                    <h2>Diagnoza</h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead" style="font-size: 1.5em;">
+                        Diagnoza: Przewlekłe zapalenie oskrzeli (Chronic Bronchitis)
+                        <br /><br />
+                        Pacjent zgłasza przewlekły kaszel, który utrzymuje się przez ponad 3 miesiące, a także zwiększoną ilość wydzieliny oskrzelowej. Objawy sugerują przewlekłe zapalenie oskrzeli, będące częścią choroby obturacyjnej płuc (COPD).
+                        <br /><br />
+                        Zalecenia: 
+                        <ul>
+                            <li>Regularne stosowanie inhalatorów z kortykosteroidami.</li>
+                            <li>Unikanie ekspozycji na dym tytoniowy i inne czynniki drażniące.</li>
+                            <li>Regularne badania kontrolne w celu monitorowania stanu zdrowia płuc.</li>
+                            <li>Program rehabilitacji oddechowej.</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolumna z plikami do pobrania -->
+        <div class="col-md-4">
+            <div class="card my-4">
+                <div class="card-header">
+                    <h2>Pliki do pobrania</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% if meddata.filename %}
+                        <li class="list-group-item text-center">
+                            <a href="{{ url_for('static', filename='images/' + meddata.filename) }}" download>
+                                <img src="{{ url_for('static', filename='images/' + meddata.filename) }}" alt="Pobierz plik" class="img-thumbnail" style="max-width: 150px;"/>
+                                <br />Plik do pobrania
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
