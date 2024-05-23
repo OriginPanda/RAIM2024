@@ -1,15 +1,18 @@
-{% extends "base.html" %} {%block content%}
-    <div class="container">
+{% extends "base.html" %}{% from "jinja_helpers.html" import render_field %} {%
+  from "jinja_helpers.html" import render_button %} {%block title%}Med-Wiz
+  Rejestracja{%endblock%} {%block content%}    
+  <div class="container">
       <div class = "container">
         <form method="post">
+          {{ form.csrf_token }} {{form.hidden_tag()}}
+
           <h1>{{user.name}} update information</h1>
-          <label>New name:</label>
-          <input placeholder="New name" class="form-control" name="name" value="{{user.name}}"></input></p>
-          <label>New Email:</label>
-          <input placeholder="New email" class="form-control" name="email" value="{{user.email}}"></input></p>
-          <label>New Password:</label>
-          <input  type="password" class="form-control" name="password"></input><br />
-          <button type="submit" class="btn btn-primary">Submit</button>
+          {{render_field(form.name)}}
+          {{render_field(form.email)}}
+          {{render_field(form.password)}}
+          <br />
+
+          {{render_button(form.submit)}}
 
         </form>
 

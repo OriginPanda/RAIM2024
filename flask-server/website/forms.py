@@ -36,7 +36,13 @@ class PatientForm(FlaskForm):
         if len(check) != 11:
             raise ValidationError("Błędny pesel")
        
-       
+class SettingsForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(message=("Wpisz email")),Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    repassword = PasswordField('Retype Password', validators=[DataRequired(), EqualTo('password')])
+
+    name =  StringField('Name')
+    submit = SubmitField("Change")
        
 def FileSizeLimit(max_size_in_mb):
         max_bytes = max_size_in_mb*1024*1024
