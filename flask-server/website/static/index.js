@@ -22,4 +22,19 @@ function deleteMed(medicaldataId){
     }).then((_res) => {
         location.reload();
     });
+}function addToMyPatients(patientId){
+    fetch('/patients/addToMyPatients',{
+        method: "POST",
+        body: JSON.stringify({patientId: patientId})
+    }).then((_res) => {
+        location.reload();
+    });
+}
+function deleteFromMyPatients(patientId){
+    fetch('/patients/deleteFromMyPatients',{
+        method: "POST",
+        body: JSON.stringify({patientId: patientId})
+    }).then((_res) => {
+        location.reload();
+    });
 }

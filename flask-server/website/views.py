@@ -85,6 +85,29 @@ def delete_patient():
         db.session.commit()
      
     return jsonify({})
+@views.route('/patients/addToMyPatients', methods=['GET','POST'])
+@login_required
+def addToMyPatients():
+    patient = json.loads(request.data)
+    patientId = patient['patientId']
+    patient = Patient.query.get_or_404(patientId)
+    user = User.query.filter_by(id=current_user.id).first()
+    user.patient.append(patient)
+
+    db.session.commit()
+    return jsonify({})
+
+@views.route('/patients/deleteFromMyPatients', methods=['GET','POST'])
+@login_required
+def deleteFromMyPatients():
+    patient = json.loads(request.data)
+    patientId = patient['patientId']
+    patient = Patient.query.get_or_404(patientId)
+    user = User.query.filter_by(id=current_user.id).first()
+    user.patient.remove(patient)
+    db.session.commit()
+    return jsonify({})
+
 
 @views.route('/patients/MedData/add/<int:patientId>', methods=['POST'])
 @login_required

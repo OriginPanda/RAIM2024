@@ -4,6 +4,10 @@ from sqlalchemy.sql import func
 from os import path 
 from PIL import Image
 
+user_patient = db.Table('user_patient', 
+                        db.Column('user_id', db.Integer, db.ForeignKey('user.id')), 
+                        db.Column('patient_id', db.Integer, db.ForeignKey('patient.id')))
+
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(500))
@@ -43,6 +47,7 @@ class User(db.Model, UserMixin):
     # address =  db.Column(db.String(50))
     # phone_number = db.Column(db.Integer)
     
+    patient = db.relationship('Patient', secondary=user_patient, backref='patients')
     comments = db.relationship('Comment')
     medicalDataAdded = db.relationship('MedicalData')
     def __repr__(self):
