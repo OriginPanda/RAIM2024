@@ -9,16 +9,18 @@ from .forms import PatientForm, MedDataForm, CommentForm
 from . import db
 import os 
 from werkzeug.utils import secure_filename
-
+from sqlalchemy import desc
 
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET','POST'])
 @login_required
 def home():
-    comform = CommentForm()
             
-    return render_template("home.html", user=current_user, comform = comform)
+    patients = Patient.query.order_by(Patient.id)
+    users = User.query.order_by(User.id)
+    meddata = MedicalData.query.order_by(desc(MedicalData.date)).limit(4)
+    return render_template("home.html", user=current_user, patients = patients, meddata = meddata, users = users)
 
 @views.route('/com/delete', methods=['POST'])
 @login_required
@@ -84,7 +86,7 @@ def delete_patient():
      
     return jsonify({})
 
-@views.route('/patients/addMed/<int:patientId>', methods=['POST'])
+@views.route('/patients/MedData/add/<int:patientId>', methods=['POST'])
 @login_required
 def addPatMed(patientId):
     
@@ -151,7 +153,6 @@ def addPatCom(patientId):
     
 
     if comform.validate_on_submit():
-        print('siema')
         new_comment = Comment(text=comform.text.data, user_id=current_user.id, patient_id = patientId)
         db.session.add(new_comment)
         db.session.commit()
@@ -174,3 +175,10 @@ def addCom():
             
     return redirect('/')
 
+@views.route('patients/MedData/<int:meddataId>')
+@login_required
+def viewMedData(meddataId):
+    meddata = MedicalData.query.get_or_404(meddataId)
+    patient = Patient.query.get_or_404(meddata.patient_id)
+    users = User.query.order_by(User.id)
+    return render_template("MedData.html", user = current_user, users = users,  patient = patient, meddata = meddata)
