@@ -1,83 +1,68 @@
 {% extends "base.html" %}{% from "jinja_helpers.html" import render_field %} {%
-from "jinja_helpers.html" import render_button %} {%block title%}Med-Wiz
-Rejestracja{%endblock%} {%block content%}
-<br />
-<div class="shadow p-3 mb-5 bg-body rounded">
-  <form method="post" novalidate="true">
-    {{ form.csrf_token }}{{form.hidden_tag()}}{{render_field(form.name)}}
-    <br />
-    {{render_field(form.pesel)}}
-    <br />
-    {{render_button(form.submit)}}
-  </form>
-</div>
-<br />
-<h1>Moje pacjenty</h1>
-{% if user.is_authenticated %}
+  from "jinja_helpers.html" import render_button %} {%block title%}Med-Wiz
+  Rejestracja{%endblock%} {%block content%}
+  <br />
+  <div class="shadow p-3 mb-5 bg-body rounded">
+    <form method="post" novalidate="true">
+      {{ form.csrf_token }}{{form.hidden_tag()}}{{render_field(form.name)}}
+      <br />
+      {{render_field(form.pesel)}}
+      <br />
+      {{render_button(form.submit)}}
+    </form>
+  </div>
+  <br />
+  <h1>Moje pacjenty</h1>
+  <table class="table table-hover table-bordered table-striped">
+    {% for patient in user.patient %}
+    <tr>
+      <td>
+        {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
+        Pesel: {{patient.pesel}}
+      </p>
+        <button
+          type="button"
+          class="btn"
+          onClick="deletePatient('{{ patient.id }}')"
+        >
+        <button
+          type="button"
+          class="btn"
+          onClick="deleteFromMyPatients('{{ patient.id }}')"
+        >
+        <input class="btn btn-success", id="submit",name="submit", type="submit", value="Usuń pacjenta"></input>
+        </button>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h1>Wszystkie pacjenty</h1>
+  <table class="table table-hover table-bordered table-striped">
+    {% for patient in patients %}
+    <tr>
+      <td>
+        {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
+        Pesel: {{patient.pesel}}
+        <button
+          type="button"
+          class="close"
+          onClick="deletePatient('{{ patient.id }}')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </p>
+        <button
+          type="button"
+          class="btn"
+          onClick="addPatient('{{ patient.id }}')"
+        >
+        <input class="btn btn-success", id="submit",name="submit", type="submit", value="Dodaj pacjenta"></input>
 
-<table class="table table-hover table-bordered table-striped">
-  {% for patient in patients %}
-  {% for current_user in patient.users %}
-  {% if user.id==current_user.id %}
-  <tr>
-    <td>
-
-      {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
-      Pesel: {{patient.pesel}}
-      <button
-        type="button"
-        class="close"
-        onClick="deletePatient('{{ patient.id }}')"
-      >
-        <span aria-hidden="+-true">&times;</span>
-      </button>
-      <button
-        type="button"
-        class="close"
-        onClick="deleteFromMyPatients('{{ patient.id }}')"
-      >
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
-      </svg>
-      </button>
-    </td>
-  </tr>
-  {% endif %}
-  {% endfor %}
-  {% endfor %}
-</table>
-<h1>Wszystkie pacjenty</h1>
-<table class="table table-hover table-bordered table-striped">
-  {% for patient in patients %}
-  <tr>
-    <td>
-
-
-      {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
-      Pesel: {{patient.pesel}}
-      <button
-        type="button"
-        class="close"
-        onClick="deletePatient('{{ patient.id }}')"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <button
-        type="button"
-        class="close"
-        onClick="addPatient('{{ patient.id }}')"
-      >
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-      </svg>
-      </button>
-
-
-    </td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
-{%endblock%}
+        </button>
+        
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {%endblock%}
+  

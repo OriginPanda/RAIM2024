@@ -94,8 +94,7 @@ def addPatient():
     patientId = patient['patientId']
     patient = Patient.query.get_or_404(patientId)
     user = User.query.filter_by(id=current_user.id).first()
-    patient.users.append(user)
-    print(patient.users)
+    user.patient.append(patient)
 
     db.session.commit()
     return render_template("patients.html", user = current_user)
@@ -107,7 +106,7 @@ def deleteFromMyPatients():
     patientId = patient['patientId']
     patient = Patient.query.get_or_404(patientId)
     user = User.query.filter_by(id=current_user.id).first()
-    patient.users.remove(user)
+    user.patient.remove(patient)
     db.session.commit()
     return render_template("patients.html", user = current_user)             
 
@@ -200,4 +199,3 @@ def addCom():
         return redirect('/')
             
     return redirect('/')
-
