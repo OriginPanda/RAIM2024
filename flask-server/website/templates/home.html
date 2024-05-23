@@ -6,7 +6,7 @@
 {% block content %}
 <h1 align="center">Strona główna  {{ current_user.name }}</h1>
 
-<div class="container-fluid px-0">
+<div class="container-fluid">
   <div class="row">
     <!-- Left Column: Available Patients -->
     <div class="col-md-2 bg-grey">
@@ -31,7 +31,7 @@
       <ul class="list-group list-group-flush" id="medicalRecords">
         {% for data in meddata %}
         
-        <li class="list-group-item" style="font-size:1.2em;">
+        <li class="list-group-item border-0" style="font-size:1.2em;">
           <div class="shadow p-3 mb-5 bg-body rounded">
           <b>Tytuł:</b> {{ data.title }}
           <br />
