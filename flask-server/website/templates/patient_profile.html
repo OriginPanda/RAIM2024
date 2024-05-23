@@ -1,27 +1,15 @@
-{% extends "base.html" %} 
-{% from "jinja_helpers.html" import render_field, render_button, render_checkbox %}
-
-{% block title %}Med-Wiz{% endblock %}
+{% extends "base.html" %}{% from "jinja_helpers.html" import render_field %} {%
+  from "jinja_helpers.html" import render_button %} {%block title%}Med-Wiz
+  Ustawienia{%endblock%}
 
 {% block content %}
 <h1 align="center">Profil Pacjenta: {{ patient.name }}</h1>
 
 <div class="container-fluid px-0">
   <div class="row">
-    <!-- Left Column: Available Patients -->
-    <div class="col-md-2 bg-info">
-      <h2>Dostępni pacjenci</h2>
-      <ul class="list-group">
-        {% for patients in yourpatients %}
-        <li class="list-group-item">
-          {{ patients.name }}
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
 
     <!-- Center Column: Medical Data and Form -->
-    <div class="col-md-5">
+    <div class="col-md-5 px-5">
       <h2>Dane Medyczne</h2>
       <div class="shadow p-3 mb-5 bg-body rounded">
         <form
@@ -92,7 +80,7 @@
         <li class="list-group-item" style="border: 2px solid lightgrey">
           <b>Data zamieszczenia:</b> {{ comment.date }}
           <br />
-          Autor: {{users.get(comment.user_id).name }}
+          Autor: {{users.get(comment.user_id).name}}
           <br />
           {{ comment.text }}
           <br />

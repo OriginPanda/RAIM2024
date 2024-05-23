@@ -14,11 +14,12 @@
                 <div class="card-body">
                     <ul class="list-group list-group-flush" id="comments">
                         <li class="list-group-item" style="font-size: 1.2em;">
+                            <p style="font-size: 1.5em;"><b>Tytuł wpisu:</b> {{ meddata.title }}</p>
                             <p><b>Data zamieszczenia:</b> {{ meddata.date }}</p>
                             <p><b>Autor:</b> {{ users.get(meddata.user_id).name }}</p>
                             <p><b>Pacjent:</b> {{ patient.name }}</p>
                             <p><b>Pesel pacjenta:</b> {{ patient.pesel }}</p>
-                            <p><b>Tytuł wpisu:</b> {{ meddata.title }}</p>
+                            
 
                             {% if meddata.filename.lower().endswith('.mp4') %}
                             <div class="text-center">
@@ -45,17 +46,7 @@
                 </div>
                 <div class="card-body">
                     <p class="lead" style="font-size: 1.5em;">
-                        Diagnoza: Przewlekłe zapalenie oskrzeli (Chronic Bronchitis)
-                        <br /><br />
-                        Pacjent zgłasza przewlekły kaszel, który utrzymuje się przez ponad 3 miesiące, a także zwiększoną ilość wydzieliny oskrzelowej. Objawy sugerują przewlekłe zapalenie oskrzeli, będące częścią choroby obturacyjnej płuc (COPD).
-                        <br /><br />
-                        Zalecenia: 
-                        <ul>
-                            <li>Regularne stosowanie inhalatorów z kortykosteroidami.</li>
-                            <li>Unikanie ekspozycji na dym tytoniowy i inne czynniki drażniące.</li>
-                            <li>Regularne badania kontrolne w celu monitorowania stanu zdrowia płuc.</li>
-                            <li>Program rehabilitacji oddechowej.</li>
-                        </ul>
+                        {{meddata.diagnosis}}
                     </p>
                 </div>
             </div>

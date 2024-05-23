@@ -19,6 +19,6 @@ def user_settings ():
         print(user)
         user.name = request.form.get("name")
         user.email = request.form.get("email")
-        user.password = generate_password_hash(request.form.get("password"), method='scrypt')
+        user.password = generate_password_hash(request.form.get("password"), method='sha256')
         db.session.commit()
-    return render_template("settings.html", user=current_user)
+    return render_template("settings.html", user=current_user, )

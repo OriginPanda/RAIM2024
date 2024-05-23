@@ -9,15 +9,20 @@
 <div class="container-fluid px-0">
   <div class="row">
     <!-- Left Column: Available Patients -->
-    <div class="col-md-2 bg-info">
+    <div class="col-md-2 bg-grey">
       <h2>Dostępni pacjenci</h2>
-      <ul class="list-group">
-        {% for patients in yourpatients %}
-        <li class="list-group-item">
-          {{ patients.name }}
-        </li>
+      <table class="table table-hover table-bordered table-striped">
+        {% for patient in user.patient %}
+        <tr>
+          <td>
+            {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
+            Pesel: {{patient.pesel}}
+            </br>
+            <a  class="btn btn-primary mt-3" href="{{ url_for('views.patientView', patientId=patient.id) }}">Profil</a>
+          </td>
+        </tr>
         {% endfor %}
-      </ul>
+      </table>
     </div>
 
     <!-- Center Column: Medical Data and Form -->
