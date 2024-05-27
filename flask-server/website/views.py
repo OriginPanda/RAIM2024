@@ -152,9 +152,9 @@ def deleteMedData():
     medicaldata = json.loads(request.data)
     medicaldataId = medicaldata['medicaldataId']
     medicaldata = MedicalData.query.get_or_404(medicaldataId)
-    
     if medicaldata:
-        if(current_user != medicaldata.user_id):
+        print("2")
+        if(current_user.id != medicaldata.user_id):
             return redirect(url_for('views.deleteMedData'))
         if medicaldata.filename:
             os.remove(os.path.join(app.config['IMAGE_UPLOADS'], medicaldata.filename))
@@ -208,7 +208,7 @@ def viewMedData(meddataId):
     meddata = MedicalData.query.get_or_404(meddataId)
     patient = Patient.query.get_or_404(meddata.patient_id)
     users = User.query.order_by(User.id)
-    return render_template("MedData.html", user = current_user, users = users,  patient = patient, meddata = meddata)
+    return render_template("meddata.html", user = current_user, users = users,  patient = patient, meddata = meddata)
 
 
 # @views.route('/settings/change', methods=['POST'])
