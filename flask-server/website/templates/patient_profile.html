@@ -42,7 +42,7 @@
         </form>
       </div>
       <br />
-      <ul class="list-group list-group-flush" id="medicalRecords">
+      <ul class="list-group list-group-flush" id="medicaldata">
         {% for meddata in patient.medicalRecord %}
         
         <li class="list-group-item border-0" style="font-size:1.2em;">
@@ -54,7 +54,7 @@
           <b>Data zamieszczenia:</b> {{ meddata.date }} 
           <div align="right">
             <a href="{{ url_for('views.viewMedData', meddataId=meddata.id) }}" class="btn btn-primary mt-3">Zobacz Wpis</a>
-            <button type="button" class="btn btn-danger mt-3" onClick="deleteMed('{{ meddata.id }}')">Usun</button>
+            <button type="button" class="btn btn-danger mt-3" onClick="deleteMed('{{meddata.id}}')">Usun</button>
           </div>
         </div>
         </li>

@@ -27,6 +27,7 @@
                                     <source src="{{ url_for('static', filename='images/'+ meddata.filename) }}" type="video/mp4"/>
                                 </video>
                             </div>
+
                             {% elif meddata.filename %}
                             <div class="text-center">
                                 <img src="{{ url_for('static', filename='images/'+ meddata.filename) }}" width="320" height="320" class="img-fluid" alt="Medical Image"/>
