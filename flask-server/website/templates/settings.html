@@ -1,22 +1,53 @@
-{% extends "base.html" %} {%block content%}
+{% extends "base.html" %}
+{% from "jinja_helpers.html" import render_field %}
+{% from "jinja_helpers.html" import render_button %}
 
+{% block title %}Med-Wiz Rejestracja{% endblock %}
 
+{% block content %}
+<br />
 
-      <div class = "container">
-        <form method="post">
-          <h1>{{user.name}} update information</h1>
-          <label>New name:</label>
-          <input placeholder="New name" class="form-control" name="name" value="{{user.name}}"></input></p>
-          <label>New Email:</label>
-          <input placeholder="New email" class="form-control" name="email" value="{{user.email}}"></input></p>
-          <label>New Password:</label>
-          <input  type="password" class="form-control" name="password"></input><br />
-          <button type="submit" class="btn btn-primary">Submit</button>
-
-        </form>
-
-
-
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="container">
+        <div class="container">
+          <form method="post" novalidate="true">
+            {{ form.csrf_token }} 
+            {{ form.hidden_tag() }}
+            
+            <h1>Zmiana Hasła</h1>
+            {{ render_field(form.password) }}
+            {{ render_field(form.repassword) }}
+            <br />
+            {{ render_button(form.submit) }}
+          </form>
+        </div>
       </div>
+    </div>
 
-{%endblock%}
+    <div class="col-md-5">
+      <div class="container">
+        <div class="container">
+          <form method="post" method="post"
+          novalidate="true"
+          enctype="multipart/form-data">
+            {{ user_form.csrf_token }}
+            {{ user_form.hidden_tag() }}
+
+            <h1>Profil Użytkownika</h1>
+            {{ render_field(user_form.name) }}
+            {{ render_field(user_form.surname) }}
+            {{ render_field(user_form.specialization) }}
+            {{ render_field(user_form.about) }}
+            {{ render_field(user_form.phonenumber) }}
+            {{ render_field(user_form.picture) }}
+            <br />
+            {{ render_button(user_form.submit) }}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -49,11 +49,9 @@
           <div class="shadow p-2 mb-3 bg-body rounded ">
           <b>Tytuł:</b> {{ meddata.title }}
           <br />
-          <b>Data zamieszczenia:</b> {{ meddata.date }} 
-          <br />
-          <b>Pacjent:</b>  {{ patient.name }} : {{ patient.pesel }}
-          <br />
           <b>Diagnoza:</b> {{ meddata.diagnosis[0:20] }}
+          <br />
+          <b>Data zamieszczenia:</b> {{ meddata.date }} 
           <div align="right">
             <a href="{{ url_for('views.viewMedData', meddataId=meddata.id) }}" class="btn btn-primary mt-3">Zobacz Wpis</a>
             <button type="button" class="btn btn-danger mt-3" onClick="deleteMed('{{ meddata.id }}')">Usun</button>

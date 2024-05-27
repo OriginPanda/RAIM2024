@@ -5,7 +5,7 @@ import json
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, current_app as app
 from flask_login import login_required, current_user
 from .models import Comment, Patient, MedicalData, User
-from .forms import PatientForm, MedDataForm, CommentForm
+from .forms import PatientForm, MedDataForm, CommentForm, UserForm
 from . import db
 import os 
 from werkzeug.utils import secure_filename
@@ -209,3 +209,40 @@ def viewMedData(meddataId):
     patient = Patient.query.get_or_404(meddata.patient_id)
     users = User.query.order_by(User.id)
     return render_template("MedData.html", user = current_user, users = users,  patient = patient, meddata = meddata)
+
+
+# @views.route('/settings/change', methods=['POST'])
+# @login_required
+# def changeUserData():
+    
+#     user = User.query.order_by(current_user)  
+#     form = UserForm()
+    
+#     if form.submit.data and form.validate_on_submit():
+#             # new_meddata = MedicalData(diagnosis=medform.text, user_id=current_user.id, patient_id = patientId, title=medform.title)
+#             picture = ''
+#             request.files['file'] # z jakiegoś powodu trzeba odpalić request po prostu i wtedy dopiero działa
+            
+#             if form.picture.data:
+#                 file = request.files['file'] 
+#                 picture = secure_filename(file.picture)
+                
+#                 print(os.path.join(app.config['IMAGE_UPLOADS'], picture))
+#                 form.file.data.save(os.path.join(app.config['IMAGE_UPLOADS'], picture))
+                
+#             user
+#             #image.save(path.join(app.config["IMAGE_UPLOADS"], filename))
+#             print(picture)
+#             user.name = form.name.data
+#             user.surname = form.surname.data
+#             user.specialization = form.specialization.data
+#             user.description = form.description.data
+#             user.contact = form.contact.data
+#             user.email = form.email.data
+            
+#             db.session.commit()
+#             flash('Dodano dane', category='success')
+#             return redirect('/settings')
+
+         
+#     return redirect('/settings')

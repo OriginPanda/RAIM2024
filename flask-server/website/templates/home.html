@@ -4,71 +4,60 @@
 {% block title %}Med-Wiz{% endblock %}
 
 {% block content %}
-<h1 align="center">Strona główna  {{ current_user.name }}</h1>
+<h1 align="center">Profil : {{ current_user.name }}</h1>
 
 <div class="container-fluid">
   <div class="row">
     <!-- Left Column: Available Patients -->
-    <div class="col-md-2 bg-grey">
+    <div class="col-md-5">
       <h2>Dostępni pacjenci</h2>
       <table class="table table-hover table-bordered table-striped">
         {% for patient in user.patient %}
         <tr>
           <td>
-            {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
-            Pesel: {{patient.pesel}}
-            </br>
-            <a  class="btn btn-primary mt-3" href="{{ url_for('views.patientView', patientId=patient.id) }}">Profil</a>
+            {{ patient.id }}. <a href="patients/{{ patient.id }}">{{ patient.name }}</a> - Pesel: {{ patient.pesel }}
+            <br />
+            <a class="btn btn-primary mt-3" href="{{ url_for('views.patientView', patientId=patient.id) }}">Profil</a>
           </td>
         </tr>
         {% endfor %}
       </table>
     </div>
 
-    <!-- Center Column: Medical Data and Form -->
+    <!-- Right Column: User Data -->
     <div class="col-md-5">
-      <h2>Nowe Dane</h2>
-      <ul class="list-group list-group-flush" id="medicalRecords">
-        {% for data in meddata %}
-        
-        <li class="list-group-item border-0" style="font-size:1.2em;">
-          <div class="shadow p-3 mb-5 bg-body rounded">
-          <b>Tytuł:</b> {{ data.title }}
-          <br />
-          <b>Data zamieszczenia:</b> {{ data.date }} 
-          <br />
-          <b>Autor:</b> {{ users.get(data.user_id).name }}
-          <br />
-          <b>Pacjent:</b>  {{ patients.get(data.patient_id).name  }} : {{ patients.get(data.patient_id).pesel }}
-          <br />
-          <b>Diagnoza:</b> {{ data.diagnosis }}
-          <br />
-          <br />
-          {% if data.filename.lower().endswith('.mp4') %}
-          <video controls autoplay width="250" height="250">
-            <source
-              src="{{ url_for('static', filename='images/' + data.filename) }}"
-              type="video/mp4"
-            />
-          </video>
-          {% elif data.filename %}
-          <img
-            src="{{ url_for('static', filename='images/' + data.filename) }}"
-            width="250"
-            height="250"
-          />
-          {% endif %}
-          <div align="right">
-            <a href="{{ url_for('views.viewMedData', meddataId=data.id) }}" class="btn btn-primary mt-3">Zobacz Wpis</a>
+      <h2 align="center">Twoje dane</h2>
+      <br />
+      <div class="profile">
+        <div class="row">
+          <div class="col-md-8">
+            <ul class="list-group list-group-flush" id="userProfile">
+              <li class="list-group-item">
+                <b>Imię:</b> {{ user.name }}
+              </li>
+              <li class="list-group-item">
+                <b>Nazwisko:</b> {{ user.surname }}
+              </li>
+              <li class="list-group-item">
+                <b>Specjalizacja:</b> {{ user.specialization }}
+              </li>
+              <li class="list-group-item">
+                <b>Kontakt:</b> {{ user.phonenumber }}
+              </li>
+              <li class="list-group-item">
+                <b>Opis:</b> {{ user.about}}
+              </li>
+            </ul>
           </div>
-        </div>
-        </li>
-        
-        {% endfor %}
-        
-      </ul>
+          <div class="col-md-4">
+            {% if user.picture %}
+              <img src="{{ url_for('static', filename='images/'+ user.picture) }}" width="320" height="320" class="img-fluid" alt="PFP"/>
+            {% else %}
+              Brak zdjęcia
+            {% endif %}
+          </div>
+      </div>
     </div>
-
   </div>
 </div>
 {% endblock %}
