@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request 
 from flask_wtf import FlaskForm 
-from wtforms import StringField, PasswordField, BooleanField , SubmitField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField , SubmitField, IntegerField, validators
 from wtforms import DecimalField, RadioField, SelectField, TextAreaField
 from wtforms.validators import InputRequired, DataRequired, EqualTo, Email, ValidationError, Length
 from wtforms.widgets import TextArea
-from flask_wtf.file import FileField
-
+from flask_wtf.file import FileField, FileAllowed
+#from flask_uploads import UploadSet, IMAGES
 
 class RegisterForm  (FlaskForm): 
     name = StringField('Name', validators=[DataRequired(message=("Halo?"))]) 
@@ -75,3 +75,30 @@ class CommentForm(FlaskForm):
     
         
     submit = SubmitField("Dodaj komentarz")
+class SettingsForm(FlaskForm):
+    #email = StringField('Email', validators=[DataRequired(message=("Wpisz email")),Email()])
+    
+    
+    password = PasswordField('Password', validators=[DataRequired()])
+    repassword = PasswordField('Retype Password', validators=[DataRequired(), EqualTo('password')])
+    
+    submit = SubmitField("Change")
+    
+
+
+class UserForm(FlaskForm):
+    name = StringField('Imię')
+    surname = StringField('Nazwisko')
+    specialization = StringField('Specjalizacja')
+    about = StringField('Opis',validators=[Length(max=1000,message="Opis zbyt długi")], widget=TextArea(),render_kw={'class': 'form-control'})
+    phonenumber = IntegerField('Numer tel.', [validators.optional()])
+    picture = FileField('Zdjęcie',validators=[FileSizeLimit(max_size_in_mb=5), FileAllowed(['jpg', 'png'], 'Images only!')])
+    submit = SubmitField('Zapisz zmiany')
+    
+    def validate_phonenumber(form, field):
+        if field.data != None:
+            print(field.data)
+            check = str(field.data)
+            if len(check) != 9:
+                raise ValidationError("Zły numer tel")
+    
