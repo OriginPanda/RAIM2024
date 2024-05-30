@@ -123,7 +123,7 @@ class MedDataForm(FlaskForm):
         submit (SubmitField): Przycisk wysyłania formularza.
     """
     title = StringField('Tytuł', validators=[DataRequired()])
-    text = StringField('Diagnoza', validators=[DataRequired(), Length(max=500, message="Wiadomość za długa")], widget=TextArea(), render_kw={'class': 'form-control'})
+    text = StringField('Opis', validators=[DataRequired(), Length(max=500, message="Wiadomość za długa")], widget=TextArea(), render_kw={'class': 'form-control'})
     file = FileField('Dodaj Plik', validators=[FileSizeLimit(max_size_in_mb=1)])
     
     # Zakomentowane walidacje, mogą być użyte w przyszłości:
