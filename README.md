@@ -3,6 +3,9 @@ Project RAIM sem. 6
 # Przedstawienie problemu
 Zadaniem grupy projektowej jest stworzenie aplikacji internetowej umożliwiającej demonstrację danych medycznych oraz ich wizualizację w wygodnej formie. 
 Aplikacja ma pozwolić na dostęp do danych medycznych pacjenta i współpracę nad ich analizą, przez zespół specjalistów.
+# Film
+[![Watch the video](https://img.youtube.com/vi/g_HsupztT78/0.jpg)](https://www.youtube.com/watch?v=g_HsupztT78)
+
 # Źródła
 *[1]Qi Zhang, Web-based medical data visualization and information sharing towards application in distributed
 diagnosis, Informatics in Medicine Unlocked,Volume 14,2019, Pages 69-81, ISSN 2352-9148
