@@ -51,15 +51,15 @@
             <a href="{{ url_for('views.viewMedData', meddataId=meddata.id) }}" class="btn btn-primary mt-3">Zobacz Wpis</a>
             <button type="button" class="btn btn-danger mt-3" onClick="deleteMed('{{meddata.id}}')">Usun</button>
           </div>
-        </div>
-        </li>
-        {% endfor %}
-      </ul>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
 
-    <!-- Right Column: Comments and Form -->
+    <!-- Right Column: Chat and Form -->
     <div class="col-md-5">
-      <h2>Opinie</h2>
+      <h2>Czat</h2>
       <br>
       <div class="shadow p-3 mb-5 bg-body rounded">
       <form method="POST" action="{{ url_for('views.addPatCom', patientId=patient.id) }}">
@@ -71,15 +71,12 @@
       </div>
       </form>
     </div>
+      <div class="shadow p-3 mb-5 bg-body rounded" style="max-height: 400px; overflow-y: scroll;">
       <ul class="list-group list-group-flush " id="comments">
         {% for comment in comments %}
         <li class="list-group-item border-0" >
           <div class="shadow p-2 mb-3 bg-body rounded ">
-          <b>Data zamieszczenia:</b> {{ comment.date }}
-          <br />
-          Autor: {{users.get(comment.user_id).name}}
-          <br />
-          {{ comment.text }}
+          <strong>{{users.get(comment.user_id).name.capitalize()}}:</strong> {{ comment.text }}
           <button type="button" class="close" onClick="deleteCom('{{ comment.id }}')">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -87,6 +84,7 @@
         </li>
         {% endfor %}
       </ul>
+    </div>
     </div>
   </div>
 </div>
