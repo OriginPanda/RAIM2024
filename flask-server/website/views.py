@@ -53,7 +53,7 @@ def patients():
     patients = Patient.query.order_by(Patient.id)          
     return render_template("patients.html", user = current_user, form = form, patients = patients)
             
-    #return render_template("home.html", user=current_user)
+    #return rener_template("home.html", user=current_user)
     
 @views.route('/patients/<int:patientId>', methods=['GET','POST'])
 @login_required
