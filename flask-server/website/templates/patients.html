@@ -12,6 +12,16 @@
     </form>
   </div>
   <br />
+  <form method="post">
+    {{ search.csrf_token }}{{search.hidden_tag()}}
+    <br />
+    {{render_field(search.searchResult)}}
+    <br />
+
+    {{render_button(search.submit)}}
+  </form>
+
+
   <h1>Moi pacjenci</h1>
   <table class="table table-hover table-bordered table-striped">
     {% for patient in user.patient %}

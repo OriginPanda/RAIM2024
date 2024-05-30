@@ -5,12 +5,11 @@ import json
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, current_app as app
 from flask_login import login_required, current_user
 from .models import Comment, Patient, MedicalData, User
-from .forms import PatientForm, MedDataForm, CommentForm, UserForm
+from .forms import PatientForm, MedDataForm, CommentForm, UserForm, SearchField
 from . import db
 import os 
 from werkzeug.utils import secure_filename
-from sqlalchemy import desc
-
+from sqlalchemy import desc, or_
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET','POST'])
@@ -37,7 +36,8 @@ def delete_com():
 @views.route('/patients', methods=['GET','POST'])
 @login_required
 def patients():
-    form = PatientForm()     
+    form = PatientForm()   
+    search = SearchField()
     if form.validate_on_submit():     
         patient = Patient.query.filter_by(pesel = form.pesel.data).first()
         if patient is None:
@@ -48,9 +48,18 @@ def patients():
             form.data.clear()
             return redirect(url_for('views.patients'))
         else:
-            form.pesel.errors.append("Użytkownik o podanym peselu już istnieje")  
-    patients = Patient.query.order_by(Patient.id)          
-    return render_template("patients.html", user = current_user, form = form, patients = patients)
+            form.pesel.errors.append("Użytkownik o podanym peselu już istnieje") 
+
+    if search.validate_on_submit():     
+        if search.searchResult.data:
+            patients = Patient.query.filter(or_(Patient.pesel.like(search.searchResult.data), Patient.name.like(search.searchResult.data)))
+        else:
+            patients = Patient.query.order_by(Patient.id) 
+
+         
+
+
+    return render_template("patients.html", user = current_user, form = form, patients = patients, search=search)
             
     #return render_template("home.html", user=current_user)
     
