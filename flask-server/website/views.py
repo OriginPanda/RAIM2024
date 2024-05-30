@@ -49,12 +49,13 @@ def patients():
             return redirect(url_for('views.patients'))
         else:
             form.pesel.errors.append("Użytkownik o podanym peselu już istnieje") 
+            
+    patients = Patient.query.order_by(Patient.id)        
 
     if search.validate_on_submit():     
         if search.searchResult.data:
             patients = Patient.query.filter(or_(Patient.pesel.like(search.searchResult.data), Patient.name.like(search.searchResult.data)))
-        else:
-            patients = Patient.query.order_by(Patient.id) 
+        
 
          
 

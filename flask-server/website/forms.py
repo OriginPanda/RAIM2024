@@ -104,5 +104,5 @@ class UserForm(FlaskForm):
     
 
 class SearchField(FlaskForm):
-    searchResult = StringField("Szukaj", validators=[Optional()])
-    submit = SubmitField('Zapisz zmiany')
+    searchResult = StringField("Wyszukiwanie", validators=[Optional()])
+    submit = SubmitField('Szukaj')

@@ -60,5 +60,33 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card my-4">
+                <div class="card-header">
+                    <h2>Multimedia</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% if meddata.filename.lower().endswith('.mp4') %}
+                        <div class="text-center">
+                            <video controls autoplay width="500" height="500">
+                                <source src="{{ url_for('static', filename='images/'+ meddata.filename) }}" type="video/mp4"/>
+                            </video>
+                        </div>
+                        
+                        {% elif meddata.filename %}
+                        <div class="text-center">
+                            <img src="{{ url_for('static', filename='images/'+ meddata.filename) }}" width="500" height="500" class="img-fluid" alt="Medical Image"/>
+                        </div>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+</div>
+
 {% endblock %}

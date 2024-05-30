@@ -11,6 +11,7 @@
     <!-- Left Column: Available Patients -->
     <div class="col-md-5">
       <h2>Dostępni pacjenci</h2>
+      <div class="shadow p-3 mb-5 bg-body rounded" style="max-height: 600px; overflow-y: scroll;">
       <table class="table table-hover table-bordered table-striped">
         {% for patient in user.patient %}
         <tr>
@@ -22,6 +23,7 @@
         </tr>
         {% endfor %}
       </table>
+    </div>
     </div>
 
     <!-- Right Column: User Data -->

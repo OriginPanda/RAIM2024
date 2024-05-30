@@ -1,57 +1,64 @@
-{% extends "base.html" %}{% from "jinja_helpers.html" import render_field %} {%
-  from "jinja_helpers.html" import render_button %} {%block title%}Med-Wiz
-  Rejestracja{%endblock%} {%block content%}
-  <br />
-  <div class="shadow p-3 mb-5 bg-body rounded">
-    <form method="post" novalidate="true">
-      {{ form.csrf_token }}{{form.hidden_tag()}}{{render_field(form.name)}}
-      <br />
-      {{render_field(form.pesel)}}
-      <br />
-      {{render_button(form.submit)}}
-    </form>
-  </div>
-  <br />
-  <form method="post">
-    {{ search.csrf_token }}{{search.hidden_tag()}}
+{% extends "base.html" %}{% from "jinja_helpers.html" import render_field %} {% from "jinja_helpers.html" import render_button %} 
+{% block title %}Med-Wiz Rejestracja{% endblock %} 
+{% block content %}
+<br />
+<div class="shadow p-3 mb-5 bg-body rounded">
+  <form method="post" novalidate="true">
+    {{ form.csrf_token }}{{ form.hidden_tag() }}{{ render_field(form.name) }}
     <br />
-    {{render_field(search.searchResult)}}
+    {{ render_field(form.pesel) }}
     <br />
-
-    {{render_button(search.submit)}}
+    {{ render_button(form.submit) }}
   </form>
+</div>
+<br />
+<form method="post" novalidate="true">
+  {{ search.csrf_token }}{{ search.hidden_tag() }}
+  {{ render_field(search.searchResult) }}
+  {{ render_button(search.submit) }}
+</form>
 
+<div class="container">
+  <div class="row">
+    <!-- Moi pacjenci column -->
+    <div class="col-md-6">
+      <h1>Moi pacjenci</h1>
+      <div class="shadow p-3 mb-5 bg-body rounded" style="max-height: 260px; overflow-y: scroll;">
+      <table class="table table-hover table-bordered table-striped">
+        {% for patient in user.patient %}
+        <tr>
+          <td>
+            {{ patient.id }}. <a href="patients/{{ patient.id }}">{{ patient.name }}</a> - Pesel: {{ patient.pesel }}
+            <br />
+            <a class="btn btn-primary mt-3" href="{{ url_for('views.patientView', patientId=patient.id) }}">Profil</a>
+            <button type="button" class="btn btn-danger mt-3" onClick="deleteFromMyPatients('{{ patient.id }}')">Usun z moich pacjentów</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    </div>
 
-  <h1>Moi pacjenci</h1>
-  <table class="table table-hover table-bordered table-striped">
-    {% for patient in user.patient %}
-    <tr>
-      <td>
-        {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
-        Pesel: {{patient.pesel}}
-      </br>
-        <a  class="btn btn-primary mt-3" href="{{ url_for('views.patientView', patientId=patient.id) }}">Profil</a>
-        <button type="button" class="btn btn-danger mt-3" onClick="deleteFromMyPatients('{{ patient.id }}')">Usun z moich pacjentów</button>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-  <h1>Wszyscy pacjenci</h1>
-  <table class="table table-hover table-bordered table-striped">
-    {% for patient in patients %}
-    {% if not patient in  user.patient %}
-    <tr>
-      <td>
-        {{patient.id}}. <a href="patients/{{patient.id}}">{{patient.name}}</a> -
-        Pesel: {{patient.pesel}}
-        <br>
-        <button type="button" class="btn btn-success mt-3" onClick="addToMyPatients('{{ patient.id }}')">Dodaj do moich</button>
-        <button type="button" class="btn btn-danger mt-3" onClick="deletePatient('{{ patient.id }}')">Usun pacjenta</button>
-        
-      </td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-  </table>
-  {%endblock%}
-  
+    <!-- Wszyscy Pacjenci column -->
+    <div class="col-md-6">
+      <h1>Wszyscy pacjenci</h1>
+      <div class="shadow p-3 mb-5 bg-body rounded" style="max-height: 260px; overflow-y: scroll;">
+      <table class="table table-hover table-bordered table-striped">
+        {% for patient in patients %}
+        {% if not patient in user.patient %}
+        <tr>
+          <td>
+            {{ patient.id }}. <a href="patients/{{ patient.id }}">{{ patient.name }}</a> - Pesel: {{ patient.pesel }}
+            <br />
+            <button type="button" class="btn btn-success mt-3" onClick="addToMyPatients('{{ patient.id }}')">Dodaj do moich</button>
+            <button type="button" class="btn btn-danger mt-3" onClick="deletePatient('{{ patient.id }}')">Usun pacjenta</button>
+          </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
