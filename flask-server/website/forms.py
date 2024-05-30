@@ -76,7 +76,7 @@ class CommentForm(FlaskForm):
         
     submit = SubmitField("Dodaj komentarz")
 class SettingsForm(FlaskForm):
-    #email = StringField('Email', validators=[DataRequired(message=("Wpisz email")),Email()])
+    #email= StringField('Email', validators=[DataRequired(message=("Wpisz email")),Email()])
     
     
     password = PasswordField('Password', validators=[DataRequired()])
