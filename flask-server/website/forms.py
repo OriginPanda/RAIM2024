@@ -27,7 +27,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
     
 class PatientForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(message=("Halo?"))])
+    name = StringField('Imie', validators=[DataRequired(message=("Halo?"))])
     pesel = IntegerField('Pesel', validators=[DataRequired()])
     submit = SubmitField("Dodaj")
     
