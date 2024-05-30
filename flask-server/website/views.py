@@ -19,8 +19,7 @@ def home():
             
     patients = Patient.query.order_by(Patient.id)
     users = User.query.order_by(User.id)
-    meddata = MedicalData.query.order_by(desc(MedicalData.date)).limit(4)
-    return render_template("home.html", user=current_user, patients = patients, meddata = meddata, users = users)
+    return render_template("home.html", user=current_user, patients = patients, users = users)
 
 @views.route('/com/delete', methods=['POST'])
 @login_required
@@ -60,13 +59,16 @@ def patients():
 def patientView(patientId):
     users = User.query.order_by(User.id)
     patient = Patient.query.get_or_404(patientId)
+    comments = Comment.query.filter_by(patient_id = patientId).order_by(desc(Comment.date))
+    medicalRecord  = MedicalData.query.filter_by(patient_id = patientId).order_by(desc(MedicalData.date))
+    
     #if current_user.group_id != patient.group_id 
     #else
     medform = MedDataForm()
     comform = CommentForm()
     
              
-    return render_template("patient_profile.html",user = current_user, users = users, medform = medform, patient = patient, comform = comform)
+    return render_template("patient_profile.html",user = current_user, users = users, medform = medform, patient = patient, comform = comform, comments = comments, medicalRecord  = medicalRecord )
 
 
 @views.route('/patients/delete', methods=['POST'])

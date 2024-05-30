@@ -9,7 +9,7 @@
         <div class="col-md-4">
             <div class="card my-4">
                 <div class="card-header">
-                    <h2>Dane Medyczne</h2>
+                    <h2>Dane</h2>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush" id="comments">
@@ -18,21 +18,7 @@
                             <p><b>Data zamieszczenia:</b> {{ meddata.date }}</p>
                             <p><b>Autor:</b> {{ users.get(meddata.user_id).name }}</p>
                             <p><b>Pacjent:</b> {{ patient.name }}</p>
-                            <p><b>Pesel pacjenta:</b> {{ patient.pesel }}</p>
-                            
-
-                            {% if meddata.filename.lower().endswith('.mp4') %}
-                            <div class="text-center">
-                                <video controls autoplay width="320" height="240">
-                                    <source src="{{ url_for('static', filename='images/'+ meddata.filename) }}" type="video/mp4"/>
-                                </video>
-                            </div>
-
-                            {% elif meddata.filename %}
-                            <div class="text-center">
-                                <img src="{{ url_for('static', filename='images/'+ meddata.filename) }}" width="320" height="320" class="img-fluid" alt="Medical Image"/>
-                            </div>
-                            {% endif %}
+                            <p><b>Pesel pacjenta:</b> {{ patient.pesel }}</p>    
                         </li>
                     </ul>
                 </div>
@@ -57,7 +43,7 @@
         <div class="col-md-4">
             <div class="card my-4">
                 <div class="card-header">
-                    <h2>Pliki do pobrania</h2>
+                    <h2>Pliki</h2>
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
