@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField , SubmitField, IntegerField, validators
 from wtforms import DecimalField, RadioField, SelectField, TextAreaField
-from wtforms.validators import InputRequired, DataRequired, EqualTo, Email, ValidationError, Length
+from wtforms.validators import InputRequired, DataRequired, EqualTo, Email, ValidationError, Length, Optional
 from wtforms.widgets import TextArea
 from flask_wtf.file import FileField, FileAllowed
 #from flask_uploads import UploadSet, IMAGES
@@ -76,7 +76,7 @@ class CommentForm(FlaskForm):
         
     submit = SubmitField("Dodaj komentarz")
 class SettingsForm(FlaskForm):
-    #email= StringField('Email', validators=[DataRequired(message=("Wpisz email")),Email()])
+    #email = StringField('Email', validators=[DataRequired(message=("Wpisz email")),Email()])
     
     
     password = PasswordField('Password', validators=[DataRequired()])
@@ -102,3 +102,7 @@ class UserForm(FlaskForm):
             if len(check) != 9:
                 raise ValidationError("Zły numer tel")
     
+
+class SearchField(FlaskForm):
+    searchResult = StringField("Szukaj", validators=[Optional()])
+    submit = SubmitField('Zapisz zmiany')
