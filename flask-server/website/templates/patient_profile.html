@@ -37,25 +37,27 @@
         </form>
       </div>
       <br />
-      <ul class="list-group list-group-flush" id="medicaldata">
-        {% for meddata in medicalRecord %}
-        
-        <li class="list-group-item border-0" style="font-size:1.2em;">
-          <div class="shadow p-2 mb-3 bg-body rounded ">
-          <b>Tytuł:</b> {{ meddata.title }}
-          <br />
-          <b>Diagnoza:</b> {{ meddata.diagnosis[0:20] }}
-          <br />
-          <b>Data zamieszczenia:</b> {{ meddata.date }} 
-          <div align="right">
-            <a href="{{ url_for('views.viewMedData', meddataId=meddata.id) }}" class="btn btn-primary mt-3">Zobacz Wpis</a>
-            <button type="button" class="btn btn-danger mt-3" onClick="deleteMed('{{meddata.id}}')">Usun</button>
+      <div class="shadow p-3 mb-5 bg-body rounded" style="max-height: 400px; overflow-y: scroll;">
+        <ul class="list-group list-group-flush" id="medicaldata">
+          {% for meddata in patient.medicalRecord %}
+          
+          <li class="list-group-item border-0" style="font-size:1.2em;">
+            <div class="shadow p-2 mb-3 bg-body rounded ">
+            <b>Tytuł:</b> {{ meddata.title }}
+            <br />
+            <b>Diagnoza:</b> {{ meddata.diagnosis[0:20] }}
+            <br />
+            <b>Data zamieszczenia:</b> {{ meddata.date }} 
+            <div align="right">
+              <a href="{{ url_for('views.viewMedData', meddataId=meddata.id) }}" class="btn btn-primary mt-3">Zobacz Wpis</a>
+              <button type="button" class="btn btn-danger mt-3" onClick="deleteMed('{{meddata.id}}')">Usun</button>
+            </div>
           </div>
           </li>
           {% endfor %}
         </ul>
       </div>
-
+    </div>  
     <!-- Right Column: Chat and Form -->
     <div class="col-md-5">
       <h2>Czat</h2>
